@@ -18,12 +18,21 @@ function fetchRequestHelper(path, options) {
     });
 }
 
-function fetchDirections(origins) {
+async function fetchDirections(origins) {
   const params = { origins };
-  return fetchRequestHelper(
+  const resRoutes = {};
+  //fetching A->B route obj:
+  resRoutes.route = await fetchRequestHelper(
     DIRECTIONS_API_URL +
       `origin=${params.origins.A}&destination=${params.origins.B}&key=${anyApiKey}`
   );
+  //fetching B->A route obj:
+  resRoutes.etuor = await fetchRequestHelper(
+    DIRECTIONS_API_URL +
+      `origin=${params.origins.B}&destination=${params.origins.A}&key=${anyApiKey}`
+  );
+
+  return resRoutes;
 }
 
 function fetchDistanceMatrix(start, end) {

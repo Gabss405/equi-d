@@ -14,52 +14,92 @@ const {
 
 exports.getRoute = async (req, res) => {
   try {
-    //1. fetch route object from gmaps API
-    const route = await fetchDirections(req.params);
+    //1. fetch route objects from gmaps API, it returns two route objects in an object: routes.route is A->B and routes.etuor is B->A
+    const routes = await fetchDirections(req.params);
+    // console.log(routes.etuor);
+    //2. get the decoded polyline coordinates
+    // returns an object of 2 arrays: .route and .etuor
 
-    //2. get the decoded polyline coordinates:
-    const decodedPolyline = await polylineDecoder(route);
+    const decodedPolylines = await polylineDecoder(routes);
 
-    //3. set midpoint roughly
-    const polylineMiddleCoordinates =
-      decodedPolyline[Math.floor(decodedPolyline.length / 2)];
+    //3. extract midpoint roughly on both arrays (returns an obj of 2 objs with props: .route and .etuor)
 
-    //4. fetching distance matrix to check how far in time provisional center is from start location  (start -> polylineMiddleCoordinates)
-    const a2polyMidDM = await fetchDistanceMatrix(
-      route.routes[0].legs[0].start_location,
-      polylineMiddleCoordinates.location
+    const polylineMidCoords = {
+      route:
+        decodedPolylines.route[Math.floor(decodedPolylines.route.length / 2)],
+      etuor:
+        decodedPolylines.etuor[Math.floor(decodedPolylines.etuor.length / 2)],
+    };
+    //console.log("etuor mid", polylineMidCoords.etuor);
+
+    //console.log(polylineMidCoords);
+    // //4. fetching distance matrix to check how far in time provisional center is from start location  (start -> polylineMidCoords)
+    const routePolyMidDM = await fetchDistanceMatrix(
+      routes.route.routes[0].legs[0].start_location,
+      polylineMidCoords.route.location
     );
-    //5. calculate polyTimeUnit (total duration divided by total amount of polylines) to get a resolution,
-    // returns number of seconds it takes from one polyline to antoher on an average
-    const polyTimeUnit = polyTimeCalc(route, decodedPolyline);
-
-    //6. Polyprecision - if provisional center point is "behind" or "ahead" desired time based center,
-    //it returns desired polyline point coordinates based on time difference and polytimeUnit:
-    const precPolyMidPoint = await polyPrecision(
-      route,
-      decodedPolyline,
-      a2polyMidDM,
-      polyTimeUnit
+    const etuorPolyMidDM = await fetchDistanceMatrix(
+      routes.etuor.routes[0].legs[0].start_location,
+      polylineMidCoords.etuor.location
     );
+
+    // console.log(etuorPolyMidDM);
+
+    // //5. calculate polyTimeUnit (total duration divided by total amount of polylines) to get a resolution,
+    // // returns number of seconds it takes from one polyline to antoher on an average
+    const routePolyTimeUnit = polyTimeCalc(
+      routes.route,
+      decodedPolylines.route
+    );
+    const etuorPolyTimeUnit = polyTimeCalc(
+      routes.etuor,
+      decodedPolylines.etuor
+    );
+
+    // console.log(routePolyTimeUnit);
+    // console.log(etuorPolyTimeUnit);
+
+    // //6. Polyprecision - if provisional center point is "behind" or "ahead" desired time based center,
+    // //it returns desired polyline point coordinates based on time difference and polytimeUnit:
+    const precPolyMidPointRoute = await polyPrecision(
+      routes.route,
+      decodedPolylines.route,
+      routePolyMidDM,
+      routePolyTimeUnit
+    );
+    const precPolyMidPointEtuor = await polyPrecision(
+      routes.etuor,
+      decodedPolylines.etuor,
+      etuorPolyMidDM,
+      etuorPolyTimeUnit
+    );
+
+    // console.log(precPolyMidPointRoute);
+    // console.log(precPolyMidPointEtuor);
 
     //7. getting DM for A (start) to prec midpoint, and B (end) to compare travel times:
-    const a2MidpointDM = await fetchDistanceMatrix(
-      route.routes[0].legs[0].start_location,
-      precPolyMidPoint.location
+    const routePrecMidDM = await fetchDistanceMatrix(
+      routes.route.routes[0].legs[0].start_location,
+      precPolyMidPointRoute.location
     );
-    const b2MidpointDM = await fetchDistanceMatrix(
-      route.routes[0].legs[0].end_location,
-      precPolyMidPoint.location
+    const etuorPrecMidDM = await fetchDistanceMatrix(
+      routes.etuor.routes[0].legs[0].start_location,
+      precPolyMidPointEtuor.location
     );
-
-    console.log(precPolyMidPoint.location);
+    // console.log(etuorPrecMidDM);
+    // console.log(
+    //   secondsToTime(etuorPrecMidDM.rows[0].elements[0].duration.value)
+    // );
 
     const resObject = {
-      route,
-      polyTimeUnit,
-      precPolyMidPoint,
-      a2MidpointDM,
-      b2MidpointDM,
+      route: routes.route,
+      etour: routes.etuor,
+      routePolyTimeUnit,
+      etuorPolyTimeUnit,
+      precPolyMidPointRoute,
+      precPolyMidPointEtuor,
+      routePrecMidDM,
+      etuorPrecMidDM,
     };
 
     res.send(resObject);

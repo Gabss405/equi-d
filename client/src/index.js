@@ -16,12 +16,9 @@ ReactDOM.render(
       <p style={{ color: "lightgreen" }}>
         Lightgreen: Mid Point based on polyprecision
       </p>
-      {/* <p style={{ color: "lightgreen" }}>
-        Light Green: Mid Point based on step duration in route{" "}
-      </p>
       <p style={{ color: "lightblue" }}>
-        Light Blue: Mid Point based on step duration in reverse route{" "}
-      </p> */}
+        Light Blue: Mid Point based on polyprecision Reverse Route
+      </p>
 
       <p></p>
     </div>

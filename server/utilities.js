@@ -17,16 +17,30 @@ function secondsToTime(d) {
 ///////////////////////// POLYLINE MALARKEY START ///////////////////////////////
 // takes a route object and returns array of all polylines from route
 
-async function polylineDecoder(route) {
-  let routePolylineCoordinates = [];
+function polylineDecoder(routes) {
+  let routePolylineCoordinates = {};
+
+  routePolylineCoordinates.route = [];
+  routePolylineCoordinates.etuor = [];
+
   polyline
-    .decode(route.routes[0].overview_polyline.points)
+    .decode(routes.route.routes[0].overview_polyline.points)
     .forEach((item, index) => {
-      routePolylineCoordinates.push({
+      routePolylineCoordinates.route.push({
         id: index + Date.now(),
         location: { lat: item[0], lng: item[1] },
       });
     });
+
+  polyline
+    .decode(routes.etuor.routes[0].overview_polyline.points)
+    .forEach((item, index) => {
+      routePolylineCoordinates.etuor.push({
+        id: index + Date.now(),
+        location: { lat: item[0], lng: item[1] },
+      });
+    });
+
   return routePolylineCoordinates;
 }
 

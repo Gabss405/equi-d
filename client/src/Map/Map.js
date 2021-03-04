@@ -10,12 +10,25 @@ import "./Map.css";
 
 import Utilities from "../utilities/Utilities";
 
+//import from "../utilities/Utilities";
+
 import { silver } from "./map.styles/map.style";
 
 const ApiKey = process.env.REACT_APP_API_KEY;
 
 function Map({ routeData }) {
   const [selected, setSelected] = useState("");
+
+  // route: routes.route,
+  //     etour: routes.etour,
+  //     routePolyTimeUnit,
+  //     etuorPolyTimeUnit,
+  //     precPolyMidPointRoute,
+  //     precPolyMidPointEtuor,
+  //     routePrecMidDM,
+  //     etuorPrecMidDM,
+
+  console.log(routeData);
 
   console.log(
     "Half the total duration from A->A/B: ",
@@ -24,29 +37,53 @@ function Map({ routeData }) {
     )
   );
   console.log(
-    `Margin of error: ${Utilities.secondsToTime(routeData.polyTimeUnit * 2)}`
+    "Half the total duration from B->B/A: ",
+    Utilities.secondsToTime(
+      routeData.etour.routes[0].legs[0].duration.value / 2
+    )
   );
   console.log(
-    "It takes ",
-    Utilities.secondsToTime(
-      routeData.a2MidpointDM.rows[0].elements[0].duration.value
-    ),
-    " to get from Origin B to midpoint"
+    `Margin of error (A->B): ${Utilities.secondsToTime(
+      routeData.routePolyTimeUnit * 2
+    )}`
   );
   console.log(
-    "It takes ",
-    Utilities.secondsToTime(
-      routeData.b2MidpointDM.rows[0].elements[0].duration.value
-    ),
-    " to get from Origin A to midpoint"
+    `Margin of error (B->A): ${Utilities.secondsToTime(
+      routeData.etuorPolyTimeUnit * 2
+    )}`
   );
 
-  console.log(routeData.precPolyMidPoint.location);
+  console.log(
+    "It takes ",
+    Utilities.secondsToTime(
+      routeData.routePrecMidDM.rows[0].elements[0].duration.value
+    ),
+    " to get from Origin A to midpoint (A poly)"
+  );
+
+  console.log(
+    "It takes ",
+    Utilities.secondsToTime(
+      routeData.etuorPrecMidDM.rows[0].elements[0].duration.value
+    ),
+    " to get from Origin B to midpoint (B poly)"
+  );
 
   const onSelect = (item) => {
     setSelected(item);
   };
 
+  function secondsToTime(d) {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor((d % 3600) / 60);
+    var s = Math.floor((d % 3600) % 60);
+
+    var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
+    var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
+    var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+    return hDisplay + mDisplay + sDisplay;
+  }
   function pinSymbol(color) {
     return {
       path:
@@ -65,25 +102,34 @@ function Map({ routeData }) {
   };
 
   //TODO : optimize zoom
-  // function getZoom(route) {
-  //   if (route.routes[0].legs[0].distance.value) {
+
+  console.log(routeData.route.routes[0].legs[0]);
+
+  // function optimiseZoom() {
+  //   if (routeData.route.routes[0].legs[0].duration.value) {
   //   }
   // }
 
   return (
     <LoadScript googleMapsApiKey={ApiKey}>
-      {routeData?.precPolyMidPoint.location ? (
+      {routeData?.precPolyMidPointRoute.location ? (
         <GoogleMap
           options={{ styles: silver }}
           mapContainerStyle={mapStyles}
           zoom={5}
-          center={routeData.precPolyMidPoint.location}
+          center={routeData.precPolyMidPointRoute.location}
         >
           <Marker
-            position={routeData.precPolyMidPoint.location}
+            position={routeData.precPolyMidPointRoute.location}
             title="Precise MidPoint"
             icon={pinSymbol("lightgreen")}
-            onClick={() => onSelect(routeData.precPolyMidPoint.location)}
+            // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
+          ></Marker>
+          <Marker
+            position={routeData.precPolyMidPointEtuor.location}
+            title="Precise MidPoint"
+            icon={pinSymbol("lightblue")}
+            // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
           ></Marker>
 
           <Marker
@@ -95,7 +141,7 @@ function Map({ routeData }) {
           ></Marker>
 
           <Marker
-            position={routeData.route.routes[0].legs[0].end_location}
+            position={routeData.etour.routes[0].legs[0].start_location}
             title="Origin B"
             // icon={marker}
             icon={pinSymbol("blue")}
