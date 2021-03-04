@@ -16,46 +16,30 @@ const ApiKey = process.env.REACT_APP_API_KEY;
 
 function Map({ routeData }) {
   const [selected, setSelected] = useState("");
-  // const [route, setNewRoute] = useState(routeData.route);
 
-  // const [preciseMidPointCoordinates, setPreciseMidPointCoordinates] = useState(
-  //   routeData.precPolyMidPoint.location
-  // );
-
-  // useEffect(() => {
-
-  //   (async () => {
-  //     // setNewRoute(routeData.route);
-  //     // setPreciseMidPointCoordinates(routeData.precPolyMidPoint.location);
-  //     console.log(
-  //       "Half the total duration from A->A/B: ",
-  //       Utilities.secondsToTime(
-  //         routeData.route.routes[0].legs[0].duration.value / 2
-  //       )
-  //     );
-  //     console.log(
-  //       `Margin of error: ${Utilities.secondsToTime(routeData.polyTimeUnit)}`
-  //     );
-  //     console.log(
-  //       "It takes ",
-  //       Utilities.secondsToTime(
-  //         routeData.a2MidpointDM.rows[0].elements[0].duration.value
-  //       ),
-  //       " to get from Origin B to midpoint"
-  //     );
-  //     console.log(
-  //       "It takes ",
-  //       Utilities.secondsToTime(
-  //         routeData.b2MidpointDM.rows[0].elements[0].duration.value
-  //       ),
-  //       " to get from Origin A to midpoint"
-  //     );
-  //   })();
-  // }, []);
-
-  // useEffect(() => {
-
-  // }, [preciseMidPointCoordinates]);
+  console.log(
+    "Half the total duration from A->A/B: ",
+    Utilities.secondsToTime(
+      routeData.route.routes[0].legs[0].duration.value / 2
+    )
+  );
+  console.log(
+    `Margin of error: ${Utilities.secondsToTime(routeData.polyTimeUnit * 2)}`
+  );
+  console.log(
+    "It takes ",
+    Utilities.secondsToTime(
+      routeData.a2MidpointDM.rows[0].elements[0].duration.value
+    ),
+    " to get from Origin B to midpoint"
+  );
+  console.log(
+    "It takes ",
+    Utilities.secondsToTime(
+      routeData.b2MidpointDM.rows[0].elements[0].duration.value
+    ),
+    " to get from Origin A to midpoint"
+  );
 
   console.log(routeData.precPolyMidPoint.location);
 

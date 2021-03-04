@@ -45,11 +45,11 @@ exports.getRoute = async (req, res) => {
     //7. getting DM for A (start) to prec midpoint, and B (end) to compare travel times:
     const a2MidpointDM = await fetchDistanceMatrix(
       route.routes[0].legs[0].start_location,
-      precPolyMidPoint
+      precPolyMidPoint.location
     );
     const b2MidpointDM = await fetchDistanceMatrix(
       route.routes[0].legs[0].end_location,
-      precPolyMidPoint
+      precPolyMidPoint.location
     );
 
     console.log(precPolyMidPoint.location);
