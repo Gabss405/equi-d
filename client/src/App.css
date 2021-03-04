@@ -1,0 +1,15 @@
+.App {
+  border: 5px solid red;
+}
+.app-container {
+  /* height: 100%;
+  width: 100%; */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* border: 2px solid green; */
+}
+.map-form-container {
+}
+.map-container {
+}
