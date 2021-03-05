@@ -65,8 +65,6 @@ exports.getRoute = async (req, res) => {
 
     // const trueHalfway = trueHalfwayObj
 
-    // [Math.floor(decodedPolylines.route.length / 2)]
-
     let trueHalfway = routePrecMidDM.rows[0].elements[0].duration.value < etuorPrecMidDM.rows[0].elements[0].duration.value ? precPolyMidPointEtuor : precPolyMidPointRoute;
 
     const a2TrueHalfway = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, trueHalfway.location);
