@@ -103,7 +103,7 @@ function Map({ routeData }) {
 
   //TODO : optimize zoom
 
-  console.log(routeData.route.routes[0].legs[0]);
+  console.log("routeData.route.routes[0].legs[0]");
 
   // function optimiseZoom() {
   //   if (routeData.route.routes[0].legs[0].duration.value) {

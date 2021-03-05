@@ -17,7 +17,8 @@
   },
   "homepage": "https://github.com/Gabss405/equi-d#readme",
   "devDependencies": {
-    "cz-conventional-changelog": "^3.3.0"
+    "cz-conventional-changelog": "^3.3.0",
+    "prettier": "2.2.1"
   },
   "config": {
     "commitizen": {
