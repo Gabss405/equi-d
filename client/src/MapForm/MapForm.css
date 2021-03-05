@@ -5,19 +5,18 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19);
   min-width: 25vw;
   max-width: 30vw;
-  min-height: 20vw;
-  max-height: 40vw;
+  min-height: 35vw;
+  max-height: 50vw;
   margin: 3vw;
   padding: 1vw;
   margin-right: 3vw;
 
-  overflow-y: auto;
+  /* overflow-y: auto; */
   /* border: 2px solid red; */
 }
 
 .title {
   font-size: 2.5vw;
-  padding: 1vw;
 }
 
 .calculate-button {
@@ -46,4 +45,7 @@
   border: 1px solid lightgray;
   outline: none;
   padding-left: 0.5vw;
+}
+
+p {
 }

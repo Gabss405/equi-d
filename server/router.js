@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-const router = require("express").Router();
-const controller = require("./controller");
+const router = require('express').Router();
+const controller = require('./controller');
 
-router.get("/getroutes/:A/:B", controller.getRoute);
+router.get('/getroutes/:A/:B/:C', controller.calcCentroid);
 
 // // router.post("/topics", topicsController.postNewTopic);
 // // router.delete("/topics/:id", topicsController.deleteTopic);

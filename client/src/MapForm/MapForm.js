@@ -1,13 +1,14 @@
-import "./MapForm.css";
-import { useState } from "react";
-import ApiServices from "../services/ApiServices";
+import './MapForm.css';
+import { useState } from 'react';
+import ApiServices from '../services/ApiServices';
 //import { Autocomplete, LoadScript } from "@react-google-maps/api";
 //const ScriptLoaded = require("../../docs/ScriptLoaded").default;
 
 function MapForm({ setRouteData }) {
   const [newRouteQuery, setNewRouteQuery] = useState({
-    originA: "",
-    originB: "",
+    originA: '',
+    originB: '',
+    originC: '',
   });
 
   const handleNewDist = (e) => {
@@ -21,52 +22,30 @@ function MapForm({ setRouteData }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // console.log(newRouteQuery);
     ApiServices.fetchDirectionsService({
       originA: newRouteQuery.originA,
       originB: newRouteQuery.originB,
+      originC: newRouteQuery.originC,
     })
       .then((res) => (res.status < 400 ? res : Promise.reject()))
       .then((res) => (res.status !== 204 ? res.json() : res))
       .then((res) => setRouteData(res))
       .catch((err) => {
-        console.error("Fetch Error: ", err);
+        console.error('Fetch Error: ', err);
       });
 
-    // .then((fetchedRoute) => {
-    //   setNewRoute(fetchedRoute);
-    // });
-
-    // ApiServices.fetchDirectionsService({
-    //   originA: newRouteQuery.originB,
-    //   originB: newRouteQuery.originA,
-    // }).then((fetchedRoute) => {
-    //   setRevRoute(fetchedRoute);
-    // });
-
-    setNewRouteQuery({ originA: "", originB: "" });
+    setNewRouteQuery({ originA: '', originB: '', originC: '' });
   };
 
   return (
     <form onSubmit={handleSubmit} className="inputs-container">
       <p className="title">Origin A</p>
-      <input
-        type="text"
-        value={newRouteQuery.originA}
-        name="originA"
-        onChange={handleNewDist}
-        placeholder="enter address here..."
-        className="input"
-      />
-
+      <input type="text" value={newRouteQuery.originA} name="originA" onChange={handleNewDist} placeholder="enter address here..." className="input" />
       <p className="title">Origin B</p>
-      <input
-        type="text"
-        value={newRouteQuery.originB}
-        name="originB"
-        onChange={handleNewDist}
-        placeholder="enter address here..."
-        className="input"
-      />
+      <input type="text" value={newRouteQuery.originB} name="originB" onChange={handleNewDist} placeholder="enter address here..." className="input" />
+      <p className="title">Origin C</p>
+      <input type="text" value={newRouteQuery.originC} name="originC" onChange={handleNewDist} placeholder="enter address here..." className="input" />
       <button className="calculate-button">Calculate Halfway</button>
     </form>
   );

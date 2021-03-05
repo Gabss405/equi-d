@@ -1,6 +1,5 @@
 'use strict';
 const fetch = require('node-fetch');
-// const { anyApiKey } = require("./config");
 const anyApiKey = process.env.API_KEY;
 
 const DIRECTIONS_API_URL = 'https://maps.googleapis.com/maps/api/directions/json?';
@@ -16,13 +15,22 @@ function fetchRequestHelper(path, options) {
     });
 }
 
-async function fetchDirections(origins) {
-  const params = { origins };
+async function fetchDirections(start, end) {
   const resRoutes = {};
   //fetching A->B route obj:
-  resRoutes.route = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${params.origins.A}&destination=${params.origins.B}&key=${anyApiKey}`);
+  resRoutes.route = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${start}&destination=${end}&key=${anyApiKey}`);
   //fetching B->A route obj:
-  resRoutes.etuor = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${params.origins.B}&destination=${params.origins.A}&key=${anyApiKey}`);
+  resRoutes.etuor = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${end}&destination=${start}&key=${anyApiKey}`);
+  return resRoutes;
+}
+
+async function fetchDirectionsCoord(start, end) {
+  let origin = `${start.lat},${start.lng}`;
+  let destination = `${end.lat},${end.lng}`;
+  const resRoutes = {};
+  resRoutes.route = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${origin}&destination=${destination}&key=${anyApiKey}`);
+  //fetching B->A route obj:
+  resRoutes.etuor = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${destination}&destination=${origin}&key=${anyApiKey}`);
 
   return resRoutes;
 }
@@ -34,6 +42,14 @@ function fetchDistanceMatrix(start, end) {
     DISTANCE_MATRIX_API + `origins=${origin}&destinations=${destination}&key=${anyApiKey}` // use | pipe to pass more than one origin or destination
   );
 }
+function fetchMultiDistanceMatrix(coordinates) {
+  let origins = `${coordinates.abRes.location.lat},${coordinates.abRes.location.lng}|${coordinates.bcRes.location.lat},${coordinates.bcRes.location.lng}|${coordinates.caRes.location.lat},${coordinates.caRes.location.lng}`;
+  let destinations = `${coordinates.abRes.location.lat},${coordinates.abRes.location.lng}|${coordinates.bcRes.location.lat},${coordinates.bcRes.location.lng}|${coordinates.caRes.location.lat},${coordinates.caRes.location.lng}`;
+
+  return fetchRequestHelper(
+    DISTANCE_MATRIX_API + `origins=${origins}&destinations=${destinations}&key=${anyApiKey}` // use | pipe to pass more than one origin or destination
+  );
+}
 
 //https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key=YOUR_API_KEY
 
@@ -42,4 +58,4 @@ function fetchDistanceMatrix(start, end) {
 //https://maps.googleapis.com/maps/api/distancematrix/json?origins=41.8781139,-87.6297872&destinations=113%2035.14811,-90.40892&key=YOUR_API_KEY
 
 //https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.6655101,-73.89188969999998&destinations=35.14811,-90.40892&key=YOUR_API_KEY
-module.exports = { fetchDirections, fetchDistanceMatrix, fetchRequestHelper, DIRECTIONS_API_URL };
+module.exports = { fetchDirections, fetchDistanceMatrix, fetchRequestHelper, fetchDirectionsCoord, fetchMultiDistanceMatrix };

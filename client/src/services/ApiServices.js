@@ -1,5 +1,7 @@
-function fetchDirectionsService({ originA, originB }) {
-  return fetch(`http://localhost:3015/getroutes/${originA}/${originB}`);
+function fetchDirectionsService({ originA, originB, originC }) {
+  return fetch(
+    `http://localhost:3015/getroutes/${originA}/${originB}/${originC}`
+  );
 }
 
 const ApiServices = {

@@ -6,14 +6,15 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <div className="app-container">
+      <App />
+    </div>
     <div className="map-legend">
       <div>
-        <p style={{ color: "green" }}>Green: OriginA</p>
-        <p style={{ color: "blue" }}> Blue: Origin B</p>
-        <p style={{ color: "black" }}>
-          Black: Mid Point based on polyline prediction
-        </p>
+        <p style={{ color: "red" }}> A-B midpoint</p>
+        <p style={{ color: "green" }}>B-C midpoint</p>
+        <p style={{ color: "blue" }}>C-A midpoint</p>
+
         <p style={{ color: "lightgreen" }}>
           Lightgreen: Mid Point based on polyprecision
         </p>
