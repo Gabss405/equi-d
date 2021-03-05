@@ -8,19 +8,28 @@ ReactDOM.render(
   <React.StrictMode>
     <App />
     <div className="map-legend">
-      <p style={{ color: "green" }}>Green: OriginA</p>
-      <p style={{ color: "blue" }}> Blue: Origin B</p>
-      <p style={{ color: "black" }}>
-        Black: Mid Point based on polyline prediction
-      </p>
-      <p style={{ color: "lightgreen" }}>
-        Lightgreen: Mid Point based on polyprecision
-      </p>
-      <p style={{ color: "lightblue" }}>
-        Light Blue: Mid Point based on polyprecision Reverse Route
-      </p>
+      <div>
+        <p style={{ color: "green" }}>Green: OriginA</p>
+        <p style={{ color: "blue" }}> Blue: Origin B</p>
+        <p style={{ color: "black" }}>
+          Black: Mid Point based on polyline prediction
+        </p>
+        <p style={{ color: "lightgreen" }}>
+          Lightgreen: Mid Point based on polyprecision
+        </p>
+        <p style={{ color: "lightblue" }}>
+          Light Blue: Mid Point based on polyprecision Reverse Route
+        </p>
 
-      <p></p>
+        <p></p>
+      </div>
+      <ul className="disclaimer">
+        <li>
+          more margin of error for long distances (Chicago - LA) over 4 hours
+        </li>
+        <li>still within margin for 8hrs+ drives (stop for petrol etc.)</li>
+        <li>lake/bridge problem</li>
+      </ul>
     </div>
   </React.StrictMode>,
   document.getElementById("root")

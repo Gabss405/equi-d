@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var polyline = require("@mapbox/polyline"); // encodes and decodees polylines https://www.npmjs.com/package/@mapbox/polyline
+var polyline = require('@mapbox/polyline'); // encodes and decodees polylines https://www.npmjs.com/package/@mapbox/polyline
 
 function secondsToTime(d) {
   d = Number(d);
@@ -8,9 +8,9 @@ function secondsToTime(d) {
   var m = Math.floor((d % 3600) / 60);
   var s = Math.floor((d % 3600) % 60);
 
-  var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-  var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
-  var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
+  var hDisplay = h > 0 ? h + (h === 1 ? ' hour, ' : ' hours, ') : '';
+  var mDisplay = m > 0 ? m + (m === 1 ? ' minute, ' : ' minutes, ') : '';
+  var sDisplay = s > 0 ? s + (s === 1 ? ' second' : ' seconds') : '';
   return hDisplay + mDisplay + sDisplay;
 }
 
@@ -23,23 +23,19 @@ function polylineDecoder(routes) {
   routePolylineCoordinates.route = [];
   routePolylineCoordinates.etuor = [];
 
-  polyline
-    .decode(routes.route.routes[0].overview_polyline.points)
-    .forEach((item, index) => {
-      routePolylineCoordinates.route.push({
-        id: index + Date.now(),
-        location: { lat: item[0], lng: item[1] },
-      });
+  polyline.decode(routes.route.routes[0].overview_polyline.points).forEach((item, index) => {
+    routePolylineCoordinates.route.push({
+      id: index + Date.now(),
+      location: { lat: item[0], lng: item[1] },
     });
+  });
 
-  polyline
-    .decode(routes.etuor.routes[0].overview_polyline.points)
-    .forEach((item, index) => {
-      routePolylineCoordinates.etuor.push({
-        id: index + Date.now(),
-        location: { lat: item[0], lng: item[1] },
-      });
+  polyline.decode(routes.etuor.routes[0].overview_polyline.points).forEach((item, index) => {
+    routePolylineCoordinates.etuor.push({
+      id: index + Date.now(),
+      location: { lat: item[0], lng: item[1] },
     });
+  });
 
   return routePolylineCoordinates;
 }
@@ -68,20 +64,15 @@ function polyTimeCalc(route, polyline) {
 // returns the closest polyline coordinate to halfway time (coordinates obj)
 
 function polyPrecision(route, polyline, distancematrix, polytimeunit) {
-  let durationToProvisionalHalfway =
-    distancematrix.rows[0].elements[0].duration.value;
+  let durationToProvisionalHalfway = distancematrix.rows[0].elements[0].duration.value;
 
   let desiredHalfwayduration = route.routes[0].legs[0].duration.value / 2;
 
   if (durationToProvisionalHalfway < desiredHalfwayduration) {
-    let posDiff = Math.floor(
-      (desiredHalfwayduration - durationToProvisionalHalfway) / polytimeunit
-    );
+    let posDiff = Math.floor((desiredHalfwayduration - durationToProvisionalHalfway) / polytimeunit);
     return polyline[Math.floor(polyline.length / 2) + posDiff];
   } else {
-    let negDiff = Math.floor(
-      (durationToProvisionalHalfway - desiredHalfwayduration) / polytimeunit
-    );
+    let negDiff = Math.floor((durationToProvisionalHalfway - desiredHalfwayduration) / polytimeunit);
     return polyline[Math.floor(polyline.length / 2) - negDiff];
   }
 }

@@ -22,7 +22,11 @@ code {
 .map-legend {
   background-color: darkgrey;
   font-size: 1.5vw;
+  display: flex;
 }
 p {
   padding: 1vw;
+}
+.disclaimer {
+  font-size: 1.5vw;
 }

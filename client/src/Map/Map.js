@@ -19,36 +19,38 @@ const ApiKey = process.env.REACT_APP_API_KEY;
 function Map({ routeData }) {
   const [selected, setSelected] = useState("");
 
-  // route: routes.route,
+  // routeData obj = {
+  //     route: routes.route,
   //     etour: routes.etour,
   //     routePolyTimeUnit,
   //     etuorPolyTimeUnit,
-  //     precPolyMidPointRoute,
-  //     precPolyMidPointEtuor,
-  //     routePrecMidDM,
-  //     etuorPrecMidDM,
+  //     trueHalfway,
+  //     a2TrueHalfway,
+  //     b2TrueHalfway,
+  //     trueHalfway,
+  //   }
 
-  console.log(routeData);
+  //console.log(routeData);
 
   console.log(
-    "Half the total duration from A->A/B: ",
+    "Optimal Halfway Duration(OHD) from A->A/B: ",
     Utilities.secondsToTime(
       routeData.route.routes[0].legs[0].duration.value / 2
     )
   );
   console.log(
-    "Half the total duration from B->B/A: ",
+    "Optimal Halfway Duration(OHD)  from B->B/A: ",
     Utilities.secondsToTime(
       routeData.etour.routes[0].legs[0].duration.value / 2
     )
   );
   console.log(
-    `Margin of error (A->B): ${Utilities.secondsToTime(
+    `Margin of error (deviance allowed to OHD) (A->B): ${Utilities.secondsToTime(
       routeData.routePolyTimeUnit * 2
     )}`
   );
   console.log(
-    `Margin of error (B->A): ${Utilities.secondsToTime(
+    `Margin of error (deviance allowed to OHD)(B->A): ${Utilities.secondsToTime(
       routeData.etuorPolyTimeUnit * 2
     )}`
   );
@@ -56,17 +58,17 @@ function Map({ routeData }) {
   console.log(
     "It takes ",
     Utilities.secondsToTime(
-      routeData.routePrecMidDM.rows[0].elements[0].duration.value
+      routeData.a2TrueHalfway.rows[0].elements[0].duration.value
     ),
-    " to get from Origin A to midpoint (A poly)"
+    " to get from Origin A to true halfway"
   );
 
   console.log(
     "It takes ",
     Utilities.secondsToTime(
-      routeData.etuorPrecMidDM.rows[0].elements[0].duration.value
+      routeData.b2TrueHalfway.rows[0].elements[0].duration.value
     ),
-    " to get from Origin B to midpoint (B poly)"
+    " to get from Origin B to true halfway "
   );
 
   const onSelect = (item) => {
@@ -103,7 +105,7 @@ function Map({ routeData }) {
 
   //TODO : optimize zoom
 
-  console.log("routeData.route.routes[0].legs[0]");
+  //console.log(routeData.route.routes[0].legs[0]);
 
   // function optimiseZoom() {
   //   if (routeData.route.routes[0].legs[0].duration.value) {
@@ -112,14 +114,14 @@ function Map({ routeData }) {
 
   return (
     <LoadScript googleMapsApiKey={ApiKey}>
-      {routeData?.precPolyMidPointRoute.location ? (
+      {routeData?.trueHalfway.location ? (
         <GoogleMap
           options={{ styles: silver }}
           mapContainerStyle={mapStyles}
           zoom={5}
-          center={routeData.precPolyMidPointRoute.location}
+          center={routeData.trueHalfway.location}
         >
-          <Marker
+          {/* <Marker
             position={routeData.precPolyMidPointRoute.location}
             title="Precise MidPoint"
             icon={pinSymbol("lightgreen")}
@@ -130,6 +132,13 @@ function Map({ routeData }) {
             title="Precise MidPoint"
             icon={pinSymbol("lightblue")}
             // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
+          ></Marker> */}
+
+          <Marker
+            position={routeData.trueHalfway.location}
+            title="Precise MidPoint"
+            icon={pinSymbol("red")}
+            // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
           ></Marker>
 
           <Marker
@@ -139,7 +148,6 @@ function Map({ routeData }) {
             icon={pinSymbol("green")}
             // onClick={() => onSelect(route.routes[0].legs[0])}
           ></Marker>
-
           <Marker
             position={routeData.etour.routes[0].legs[0].start_location}
             title="Origin B"
