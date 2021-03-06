@@ -88,7 +88,7 @@ function Map({ routeData }) {
 
   return (
     <LoadScript googleMapsApiKey={ApiKey}>
-      {routeData?.resObj ? (
+      {routeData?.geoCenterOfHalfways ? (
         <GoogleMap options={{ styles: silver }} mapContainerStyle={mapStyles} zoom={5} center={routeData.ABRes.location}>
           <Marker
             position={routeData.ABRes.location}
@@ -113,6 +113,14 @@ function Map({ routeData }) {
           ></Marker>
 
           <Marker
+            position={routeData.geoCenterOfHalfways}
+            title="Origin B"
+            // icon={marker}
+            icon={Utilities.pinSymbol('orange')}
+            // onClick={() => onSelect(route.routes[0].legs[0])}
+          ></Marker>
+
+          {/* <Marker
             position={routeData.resObj.abRes.location}
             title="Precise MidPoint"
             icon={Utilities.pinSymbol('orange')}
@@ -133,7 +141,7 @@ function Map({ routeData }) {
             // icon={marker}
             icon={Utilities.pinSymbol('purple')}
             // onClick={() => onSelect(route.routes[0].legs[0])}
-          ></Marker>
+          ></Marker> */}
         </GoogleMap>
       ) : (
         <p>Loading...</p>

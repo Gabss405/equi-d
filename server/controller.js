@@ -1,7 +1,10 @@
 'use strict';
 
 const triangulate = require('./utilities/utilities.triangulate');
+const circumcircle = require('./utilities/utilities.circumcircle');
 const getTrueHalfway = require('./utilities/utilities.halfway');
+const { fetchGeocoding } = require('./services');
+
 //import getTrueHalfway from './utilities/halfway';
 // const halfway = require('./utilities/utilities.halfway');
 //TODO : when triangulate compare route from first halfpoint to point in front
@@ -9,25 +12,39 @@ const getTrueHalfway = require('./utilities/utilities.halfway');
 //TODO : refactor function in utils so it calculates this from route[0].legs[0].duration.value:
 
 exports.calcCentroid = async (req, res) => {
-  //console.log(req.params);
   const A = req.params.A;
   const B = req.params.B;
   const C = req.params.C;
-
-  // getTrueHalfway(A,B);
-  // console.log(A, B, C);
 
   //Get true halfway beetween vertices of first triangle,
   //takes two Cities, location names as string or 2 LatLng objects ({lat: 44, lng: -54})
   //return example location object { id: 1614967326766, location: { lat: 39.75202, lng: -105.66234 } }
 
-  const ABRes = await getTrueHalfway(A, B);
-  const BCRes = await getTrueHalfway(B, C);
-  const CARes = await getTrueHalfway(C, A);
+  // const ABRes = await getTrueHalfway(A, B);
+  // const BCRes = await getTrueHalfway(B, C);
+  // const CARes = await getTrueHalfway(C, A);
 
-  const resObj = await triangulate(ABRes, BCRes, CARes);
+  const aGeocodes = await fetchGeocoding(A);
+  const bGeocodes = await fetchGeocoding(B);
+  const cGeocodes = await fetchGeocoding(C);
 
-  console.log(resObj);
+  console.log(aGeocodes.results[0].geometry.location);
+
+  let midpoint = circumcircle(aGeocodes.results[0].geometry.location, bGeocodes.results[0].geometry.location, cGeocodes.results[0].geometry.location);
+  console.log('is this bloody working: ', midpoint);
+
+  // console.log(ABRes);
+
+  // const geoCenterOfHalfways = {
+  //   lat: (ABRes.location.lat + BCRes.location.lat + CARes.location.lat) / 3,
+  //   lng: (ABRes.location.lng + BCRes.location.lng + CARes.location.lng) / 3,
+  // };
+
+  // console.log(geoCenterOfHalfways);
+
+  // const resObj = await triangulate(ABRes, BCRes, CARes);
+
+  // console.log(resObj);
 
   //const abbccaDM = await fetchMultiDistanceMatrix({ abRes: ABRes, bcRes: BCRes, caRes: CARes });
   //const abbccaDM = await fetchMultiDistanceMatrix({ ABRes, bcRes, caRes });
@@ -46,9 +63,10 @@ exports.calcCentroid = async (req, res) => {
 
   try {
     //res.send({ abRes: ABRes, bcRes: BCRes, caRes: CARes, abbcRes, bccaRes, caabRes, abbccaDM });
-    console.log(resObj);
-    res.send({ ABRes, BCRes, CARes, resObj });
-    res.status(200);
+    // console.log(resObj);
+    res.send({ aGeocodes, bGeocodes, cGeocodes });
+    // res.send({ ABRes, BCRes, CARes, geoCenterOfHalfways });
+    // res.status(200);
   } catch (error) {
     console.log('GET ROUTE ERROR:', error);
   }
