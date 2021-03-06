@@ -21,11 +21,14 @@ function fetchRequestHelper(path, options) {
 async function fetchDirections(start, end) {
   const resRoutes = {};
   //fetching A->B route obj:
-  resRoutes.route = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${start}&destination=${end}&key=${anyApiKey}`);
+  resRoutes.route = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${start}&destination=${end}&traffic_model=optimistic&key=${anyApiKey}`);
   //fetching B->A route obj:
-  resRoutes.etuor = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${end}&destination=${start}&key=${anyApiKey}`);
+  resRoutes.etuor = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=${end}&destination=${start}&traffic_model=optimistic&key=${anyApiKey}`);
   return resRoutes;
 }
+
+// &traffic_model=optimistic
+//&mode=bicycling
 
 async function fetchDirectionsByCoord(start, end) {
   let origin = `${start.lat},${start.lng}`;
