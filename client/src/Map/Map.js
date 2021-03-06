@@ -23,9 +23,9 @@ function Map({ routeData }) {
   //     trueHalfway,
   //   }
 
-  console.log(routeData.abbccaDM);
+  // console.log(routeData.abbccaDM);
 
-  console.log(routeData);
+  console.log('Client got routeData: ', routeData);
   // console.log(
   //   "Optimal Halfway Duration(OHD) from A->A/B: ",
   //   Utilities.secondsToTime(
@@ -83,26 +83,29 @@ function Map({ routeData }) {
   //   }
   // }
 
+  //ABRes, BCRes, CARes, resObj
+  //resObj: abRes, bcRes, caRes
+
   return (
     <LoadScript googleMapsApiKey={ApiKey}>
-      {routeData?.caabRes.location ? (
-        <GoogleMap options={{ styles: silver }} mapContainerStyle={mapStyles} zoom={5} center={routeData.abRes.location}>
+      {routeData?.resObj ? (
+        <GoogleMap options={{ styles: silver }} mapContainerStyle={mapStyles} zoom={5} center={routeData.ABRes.location}>
           <Marker
-            position={routeData.abRes.location}
+            position={routeData.ABRes.location}
             title="Precise MidPoint"
             icon={Utilities.pinSymbol('red')}
             // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
           ></Marker>
 
           <Marker
-            position={routeData.bcRes.location}
+            position={routeData.BCRes.location}
             title="Origin A"
             // icon={marker}
             icon={Utilities.pinSymbol('yellow')}
             // onClick={() => onSelect(route.routes[0].legs[0])}
           ></Marker>
           <Marker
-            position={routeData.caRes.location}
+            position={routeData.CARes.location}
             title="Origin B"
             // icon={marker}
             icon={Utilities.pinSymbol('blue')}
@@ -110,14 +113,14 @@ function Map({ routeData }) {
           ></Marker>
 
           <Marker
-            position={routeData.abbcRes.location}
+            position={routeData.resObj.abRes.location}
             title="Precise MidPoint"
             icon={Utilities.pinSymbol('orange')}
             // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
           ></Marker>
 
           <Marker
-            position={routeData.bccaRes.location}
+            position={routeData.resObj.bcRes.location}
             title="Origin A"
             // icon={marker}
             icon={Utilities.pinSymbol('green')}
@@ -125,7 +128,7 @@ function Map({ routeData }) {
           ></Marker>
 
           <Marker
-            position={routeData.caabRes.location}
+            position={routeData.resObj.caRes.location}
             title="Origin B"
             // icon={marker}
             icon={Utilities.pinSymbol('purple')}
