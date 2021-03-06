@@ -1,5 +1,5 @@
 const { secondsToTime, polylineDecoder, polyTimeCalc, polyPrecision } = require('./utilities.helpers');
-const { fetchDirections, fetchDirectionsCoord, fetchDistanceMatrix } = require('../services');
+const { fetchDirections, fetchDirectionsByCoord, fetchDistanceMatrix } = require('../services');
 
 const getTrueHalfway = async (start, end) => {
   //1. fetch route objects from gmaps API, it returns two route objects in an object: routes.route is A->B and routes.etuor is B->A
@@ -7,8 +7,8 @@ const getTrueHalfway = async (start, end) => {
   let routes = {};
 
   //console.log('start end within halfway', start, end);
-  if (start.lat) {
-    const res = await fetchDirectionsCoord(start, end);
+  if (start.lat && end.lat) {
+    const res = await fetchDirectionsByCoord(start, end);
     Object.assign(routes, res);
   } else {
     const res = await fetchDirections(start, end);
@@ -53,8 +53,14 @@ const getTrueHalfway = async (start, end) => {
   // console.log(precPolyMidPointEtuor);
 
   //7. getting DM for A (start) to prec midpoint, and B (end) to compare travel times:
+  // console.log('ln 56 hw js ', precPolyMidPointRoute.location);
+  // console.log('ln 57 hw js ', precPolyMidPointEtuor.location);
   const routePrecMidDM = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, precPolyMidPointRoute.location);
   const etuorPrecMidDM = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, precPolyMidPointEtuor.location);
+
+  // console.log(routePrecMidDM);
+  // console.log(etuorPrecMidDM);
+
   // console.log(etuorPrecMidDM);
   // console.log(
   //   secondsToTime(etuorPrecMidDM.rows[0].elements[0].duration.value)

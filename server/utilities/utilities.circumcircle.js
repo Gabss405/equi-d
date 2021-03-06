@@ -27,13 +27,13 @@ function circumcircle(a, b, c) {
 
     result.lat = minx + dx;
     result.lng = miny + dy;
-    result.r = dx * dx + dy * dy;
+    // result.r = dx * dx + dy * dy;
   } else {
     result.lat = (D * E - B * F) / G;
     result.lng = (A * F - C * E) / G;
     dx = result.lat - a.lat;
     dy = result.lng - a.lng;
-    result.r = dx * dx + dy * dy;
+    // result.r = dx * dx + dy * dy;
   }
 
   return result;

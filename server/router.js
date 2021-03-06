@@ -3,7 +3,7 @@
 const router = require('express').Router();
 const controller = require('./controller');
 
-router.get('/getroutes/:A/:B/:C', controller.calcCentroid);
+router.get('/getroutes/:A/:B/:C', controller.getMidPoint);
 
 // // router.post("/topics", topicsController.postNewTopic);
 // // router.delete("/topics/:id", topicsController.deleteTopic);

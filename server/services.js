@@ -27,7 +27,7 @@ async function fetchDirections(start, end) {
   return resRoutes;
 }
 
-async function fetchDirectionsCoord(start, end) {
+async function fetchDirectionsByCoord(start, end) {
   let origin = `${start.lat},${start.lng}`;
   let destination = `${end.lat},${end.lng}`;
   const resRoutes = {};
@@ -41,12 +41,15 @@ async function fetchDirectionsCoord(start, end) {
 ///////////////////  DISTANCEMATRIX API ///////////////////
 
 function fetchDistanceMatrix(start, end) {
+  console.log((start, end));
+  // if (start.location) console.log(start.location);
   let origin = `${start.lat},${start.lng}`;
   let destination = `${end.lat},${end.lng}`;
   return fetchRequestHelper(
     DISTANCE_MATRIX_API_URL + `origins=${origin}&destinations=${destination}&key=${anyApiKey}` // use | pipe to pass more than one origin or destination
   );
 }
+
 function fetchMultiDistanceMatrix(coordinates) {
   let origins = `${coordinates.abRes.location.lat},${coordinates.abRes.location.lng}|${coordinates.bcRes.location.lat},${coordinates.bcRes.location.lng}|${coordinates.caRes.location.lat},${coordinates.caRes.location.lng}`;
   let destinations = `${coordinates.abRes.location.lat},${coordinates.abRes.location.lng}|${coordinates.bcRes.location.lat},${coordinates.bcRes.location.lng}|${coordinates.caRes.location.lat},${coordinates.caRes.location.lng}`;
@@ -75,4 +78,4 @@ function fetchGeocoding(address) {
 
 //https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.6655101,-73.89188969999998&destinations=35.14811,-90.40892&key=YOUR_API_KEY
 
-module.exports = { fetchDirections, fetchDistanceMatrix, fetchRequestHelper, fetchDirectionsCoord, fetchMultiDistanceMatrix, fetchGeocoding };
+module.exports = { fetchDirections, fetchDistanceMatrix, fetchRequestHelper, fetchDirectionsByCoord, fetchMultiDistanceMatrix, fetchGeocoding };
