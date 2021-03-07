@@ -42,4 +42,17 @@ const Utilities = {
   optimiseZoom,
 };
 
+ // function randomCoord() {
+  //   let rndmLat =
+  //     Math.ceil(Math.random() * 60) * (Math.round(Math.random()) ? 1 : -1);
+  //   let rndmLng =
+  //     Math.ceil(Math.random() * 150) * (Math.round(Math.random()) ? 1 : -1);
+
+  //   if (rndmLng < -70) rndmLat += 30;
+  //   if (-40 < rndmLng < -20) rndmLng += 10;
+  //   if (40 < rndmLng < 150) rndmLat += 30;
+
+  //   return { lat: rndmLat, lng: rndmLng };
+  // }
+
 export default Utilities;

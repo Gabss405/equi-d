@@ -1,6 +1,6 @@
 'use strict';
 
-const { fetchDirections, fetchDistanceMatrix } = require('./services');
+const { fetchDirections, fetchDirectionsById, fetchDistanceMatrix } = require('./services');
 const { secondsToTime, polylineDecoder, polyTimeCalc, polyPrecision } = require('./utilities');
 
 //TODO : when triangulate compare route from first halfpoint to point in front
@@ -8,9 +8,11 @@ const { secondsToTime, polylineDecoder, polyTimeCalc, polyPrecision } = require(
 //TODO : refactor function in utils so it calculates this from route[0].legs[0].duration.value:
 
 exports.getRoute = async (req, res) => {
+  //console.log(req.params);
   try {
     //1. fetch route objects from gmaps API, it returns two route objects in an object: routes.route is A->B and routes.etuor is B->A
-    const routes = await fetchDirections(req.params);
+
+    const routes = await fetchDirectionsById(req.params);
     // console.log(routes.etuor);
     //2. get the decoded polyline coordinates
     // returns an object of 2 arrays: .route and .etuor
@@ -80,6 +82,7 @@ exports.getRoute = async (req, res) => {
       trueHalfway,
       a2TrueHalfway,
       b2TrueHalfway,
+      decodedPolylines,
     };
 
     res.send(resObject);

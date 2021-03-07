@@ -26,6 +26,16 @@ async function fetchDirections(origins) {
 
   return resRoutes;
 }
+async function fetchDirectionsById(origins) {
+  const params = { origins };
+  const resRoutes = {};
+  //fetching A->B route obj:
+  resRoutes.route = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=place_id:${params.origins.A}&destination=place_id:${params.origins.B}&key=${anyApiKey}`);
+  //fetching B->A route obj:
+  resRoutes.etuor = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=place_id:${params.origins.B}&destination=place_id:${params.origins.A}&key=${anyApiKey}`);
+
+  return resRoutes;
+}
 
 function fetchDistanceMatrix(start, end) {
   let origin = `${start.lat},${start.lng}`;
@@ -42,4 +52,4 @@ function fetchDistanceMatrix(start, end) {
 //https://maps.googleapis.com/maps/api/distancematrix/json?origins=41.8781139,-87.6297872&destinations=113%2035.14811,-90.40892&key=YOUR_API_KEY
 
 //https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.6655101,-73.89188969999998&destinations=35.14811,-90.40892&key=YOUR_API_KEY
-module.exports = { fetchDirections, fetchDistanceMatrix, fetchRequestHelper, DIRECTIONS_API_URL };
+module.exports = { fetchDirections, fetchDirectionsById, fetchDistanceMatrix, fetchRequestHelper, DIRECTIONS_API_URL };
