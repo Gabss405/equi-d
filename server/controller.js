@@ -76,7 +76,7 @@ exports.getRoute = async (req, res) => {
 
     const resObject = {
       route: routes.route,
-      etour: routes.etuor,
+      etuor: routes.etuor,
       routePolyTimeUnit,
       etuorPolyTimeUnit,
       trueHalfway,

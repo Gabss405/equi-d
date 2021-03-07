@@ -3,6 +3,7 @@ import {
   LoadScript,
   Marker,
   Polyline,
+  InfoWindow,
 } from "@react-google-maps/api";
 
 import { useState, useEffect } from "react";
@@ -35,7 +36,7 @@ function Map({ routeData }) {
   let zoomLevel = 5;
   // routeData obj = {
   //     route: routes.route,
-  //     etour: routes.etour,
+  //     etuor: routes.etuor,
   //     routePolyTimeUnit,
   //     etuorPolyTimeUnit,
   //     trueHalfway,
@@ -105,7 +106,7 @@ function Map({ routeData }) {
     console.log(
       "Optimal Halfway Duration(OHD)  from B->B/A: ",
       Utilities.secondsToTime(
-        routeData.etour.routes[0].legs[0].duration.value / 2
+        routeData.etuor.routes[0].legs[0].duration.value / 2
       )
     );
     console.log(
@@ -135,6 +136,7 @@ function Map({ routeData }) {
       " to get from Origin B to true halfway "
     );
 
+    console.log(routeData.b2TrueHalfway.rows[0].elements[0]);
     //TODO : route display polyline
 
     //TODO : optimize zoom
@@ -150,11 +152,16 @@ function Map({ routeData }) {
     height: "70vw",
     width: "100vw",
   };
+  const divStyle = {
+    background: `white`,
+    border: `1px solid #ccc`,
+    padding: 15,
+  };
 
-  // console.log(cities.length);
+  console.log(routeData);
 
   //const london = { lat: 51.50853, lng: -0.076132 };
-  const zoomRndm = Math.floor(Math.random() * 10) + 6;
+  const zoomRndm = Math.floor(Math.random() * 11) + 7;
 
   // console.log(cities[Math.floor(Math.random() * cities.length)]);
 
@@ -169,7 +176,7 @@ function Map({ routeData }) {
 
   return (
     <LoadScript googleMapsApiKey={ApiKey} libraries={["places"]}>
-      {routeData?.trueHalfway?.location ? (
+      {routeData?.trueHalfway?.location && routePolyPath ? (
         <GoogleMap
           options={{
             styles: retroLabels,
@@ -196,20 +203,67 @@ function Map({ routeData }) {
             // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
           ></Marker> */}
           {routePolyPath ? (
-            <Polyline
-              onLoad={(polyline) => {}}
-              path={routePolyPath}
-              options={routePolylineOptions}
-            />
+            <div>
+              <Polyline
+                onLoad={(polyline) => {}}
+                path={routePolyPath}
+                options={routePolylineOptions}
+              />
+              <div>
+                {routePolyPath && (
+                  <Marker>
+                    <InfoWindow
+                      onLoad={() => {}}
+                      position={routePolyPath[routePolyPath.length / 2]}
+                    >
+                      <div style={divStyle}>
+                        <p>
+                          {`It takes
+                    ${Utilities.secondsToTime(
+                      routeData.a2TrueHalfway.rows[0].elements[0].duration.value
+                    )}
+                    to get from
+                    ${routeData.route.routes[0].legs[0].start_address} to true
+                    halfway`}
+                        </p>
+                      </div>
+                    </InfoWindow>
+                  </Marker>
+                )}
+              </div>
+            </div>
           ) : (
-            <> </>
+            <> Loading </>
           )}
+
           {etuorPolyPath ? (
-            <Polyline
-              onLoad={(polyline) => {}}
-              path={etuorPolyPath}
-              options={etuorPolylineOptions}
-            />
+            <div>
+              <Polyline
+                onLoad={(polyline) => {}}
+                path={etuorPolyPath}
+                options={etuorPolylineOptions}
+              />
+              {etuorPolyPath && (
+                <Marker>
+                  <InfoWindow
+                    onLoad={() => {}}
+                    position={etuorPolyPath[etuorPolyPath.length / 2]}
+                  >
+                    <div style={divStyle}>
+                      <p>
+                        {`It takes
+                    ${Utilities.secondsToTime(
+                      routeData.b2TrueHalfway.rows[0].elements[0].duration.value
+                    )}
+                    to get from
+                    ${routeData.etuor.routes[0].legs[0].start_address} to true
+                    halfway`}
+                      </p>
+                    </div>
+                  </InfoWindow>
+                </Marker>
+              )}
+            </div>
           ) : (
             <> </>
           )}
@@ -229,7 +283,7 @@ function Map({ routeData }) {
             // onClick={() => onSelect(route.routes[0].legs[0])}
           ></Marker>
           <Marker
-            position={routeData.etour.routes[0].legs[0].start_location}
+            position={routeData.etuor.routes[0].legs[0].start_location}
             title="Origin B"
             // icon={marker}
             icon={Utilities.pinSymbol("blue")}
