@@ -8,11 +8,11 @@ import {
 import { useEffect, useState } from "react";
 import "./Map.css";
 
-import Utilities from "../utilities/Utilities";
+import Utilities from "../../utilities/Utilities";
 
 //import from "../utilities/Utilities";
 
-import { silver } from "./map.styles/map.style";
+import { silver, retro } from "./map.styles/map.style";
 
 const ApiKey = process.env.REACT_APP_API_KEY;
 
@@ -30,7 +30,7 @@ function Map({ routeData }) {
   //     trueHalfway,
   //   }
 
-  //console.log(routeData);
+  console.log(routeData);
 
   console.log(
     "Optimal Halfway Duration(OHD) from A->A/B: ",
@@ -75,50 +75,51 @@ function Map({ routeData }) {
     setSelected(item);
   };
 
-  function secondsToTime(d) {
-    d = Number(d);
-    var h = Math.floor(d / 3600);
-    var m = Math.floor((d % 3600) / 60);
-    var s = Math.floor((d % 3600) % 60);
-
-    var hDisplay = h > 0 ? h + (h === 1 ? " hour, " : " hours, ") : "";
-    var mDisplay = m > 0 ? m + (m === 1 ? " minute, " : " minutes, ") : "";
-    var sDisplay = s > 0 ? s + (s === 1 ? " second" : " seconds") : "";
-    return hDisplay + mDisplay + sDisplay;
-  }
-  function pinSymbol(color) {
-    return {
-      path:
-        "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z",
-      fillColor: color,
-      fillOpacity: 1,
-      strokeColor: "#000",
-      strokeWeight: 2,
-      scale: 1,
-    };
-  }
-
   const mapStyles = {
-    height: "60vh",
-    width: "60vw",
+    height: "70vw",
+    width: "100vw",
   };
+
+  //TODO : route display polyline
 
   //TODO : optimize zoom
 
   //console.log(routeData.route.routes[0].legs[0]);
 
-  // function optimiseZoom() {
-  //   if (routeData.route.routes[0].legs[0].duration.value) {
-  //   }
-  // }
+  const zoomLevel = Utilities.optimiseZoom(routeData.route);
+  console.log(zoomLevel);
+
+  function randomCoord() {
+    let rndmLat =
+      Math.ceil(Math.random() * 60) * (Math.round(Math.random()) ? 1 : -1);
+    let rndmLng =
+      Math.ceil(Math.random() * 150) * (Math.round(Math.random()) ? 1 : -1);
+
+    if (rndmLng < -70) rndmLat += 30;
+    if (-40 < rndmLng < -20) rndmLng += 10;
+    if (40 < rndmLng < 150) rndmLat += 30;
+
+    return { lat: rndmLat, lng: rndmLng };
+  }
+
+  //const london = { lat: 51.50853, lng: -0.076132 };
+  const zoomRndm = Math.floor(Math.random() * 8) + 5;
+  const random = randomCoord();
 
   return (
     <LoadScript googleMapsApiKey={ApiKey}>
       {routeData?.trueHalfway.location ? (
         <GoogleMap
-          options={{ styles: silver }}
+          options={{
+            styles: retro,
+            mapTypeControl: false,
+            zoomControl: false,
+            scaleControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+          }}
           mapContainerStyle={mapStyles}
-          zoom={5}
+          zoom={zoomLevel}
           center={routeData.trueHalfway.location}
         >
           {/* <Marker
@@ -137,7 +138,7 @@ function Map({ routeData }) {
           <Marker
             position={routeData.trueHalfway.location}
             title="Precise MidPoint"
-            icon={pinSymbol("red")}
+            icon={Utilities.pinSymbol("red")}
             // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
           ></Marker>
 
@@ -145,19 +146,31 @@ function Map({ routeData }) {
             position={routeData.route.routes[0].legs[0].start_location}
             title="Origin A"
             // icon={marker}
-            icon={pinSymbol("green")}
+            icon={Utilities.pinSymbol("green")}
             // onClick={() => onSelect(route.routes[0].legs[0])}
           ></Marker>
           <Marker
             position={routeData.etour.routes[0].legs[0].start_location}
             title="Origin B"
             // icon={marker}
-            icon={pinSymbol("blue")}
+            icon={Utilities.pinSymbol("blue")}
             // onClick={() => onSelect(route.routes[0].legs[0])}
           ></Marker>
         </GoogleMap>
       ) : (
-        <p>Loading...</p>
+        <GoogleMap
+          options={{
+            styles: retro,
+            mapTypeControl: false,
+            zoomControl: false,
+            scaleControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+          }}
+          mapContainerStyle={mapStyles}
+          zoom={zoomRndm}
+          center={random}
+        ></GoogleMap>
       )}
     </LoadScript>
   );

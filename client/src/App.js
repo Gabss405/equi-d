@@ -1,8 +1,9 @@
 import { useState } from "react";
 
 import "./App.css";
-import MapForm from "./MapForm/MapForm.js";
-import Map from "./Map/Map";
+import MapForm from "./components/MapForm/MapForm";
+import Map from "./components/Map/Map";
+import Landing from "./components/Landing/Landing";
 // import ApiServices from "./services/ApiServices";
 
 function App() {
@@ -10,12 +11,30 @@ function App() {
 
   return (
     <div className="app-container">
-      <MapForm setRouteData={setRouteData} className="map-form-container" />
-      {Object.keys(routeData).length !== 0 ? (
-        <Map routeData={routeData} classname="map-container" />
-      ) : (
-        <div>Enter info to show map </div>
-      )}
+      <div
+        className="map-form-container"
+        style={{ position: "absolute", zIndex: "3" }}
+      >
+        <MapForm setRouteData={setRouteData} />
+      </div>
+
+      <div className="all-maps-container">
+        {Object.keys(routeData).length !== 0 ? (
+          <div
+            className="result-map"
+            style={{ position: "relative", zIndex: "2" }}
+          >
+            <Map routeData={routeData} />
+          </div>
+        ) : (
+          <div
+            className="landing"
+            style={{ position: "relative", zIndex: "2" }}
+          >
+            <Landing />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

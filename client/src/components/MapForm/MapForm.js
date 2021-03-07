@@ -1,15 +1,27 @@
 import "./MapForm.css";
 import { useState } from "react";
-import ApiServices from "../services/ApiServices";
-//import { Autocomplete, LoadScript } from "@react-google-maps/api";
+import ApiServices from "../../services/ApiServices";
+import {
+  Autocomplete,
+  LoadScript,
+  StandaloneSearchBox,
+  useJsApiLoader,
+} from "@react-google-maps/api";
+
 //const ScriptLoaded = require("../../docs/ScriptLoaded").default;
+
+const ApiKey = process.env.REACT_APP_API_KEY;
 
 function MapForm({ setRouteData }) {
   const [newRouteQuery, setNewRouteQuery] = useState({
     originA: "",
     originB: "",
   });
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: "YOUR_API_KEY",
+  });
 
+  const places = (process.env.REACT_APP_GOOGLE_LIBS || "").split(",");
   const handleNewDist = (e) => {
     const { name, value } = e.target;
     setNewRouteQuery({
@@ -47,28 +59,36 @@ function MapForm({ setRouteData }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="inputs-container">
-      <p className="title">Origin A</p>
-      <input
-        type="text"
-        value={newRouteQuery.originA}
-        name="originA"
-        onChange={handleNewDist}
-        placeholder="enter address here..."
-        className="input"
-      />
+    <div className="inputs-container">
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="title">
+          <p>Origin A</p>
 
-      <p className="title">Origin B</p>
-      <input
-        type="text"
-        value={newRouteQuery.originB}
-        name="originB"
-        onChange={handleNewDist}
-        placeholder="enter address here..."
-        className="input"
-      />
-      <button className="calculate-button">Calculate Halfway</button>
-    </form>
+          <input
+            type="text"
+            value={newRouteQuery.originA}
+            name="originA"
+            onChange={handleNewDist}
+            placeholder="enter address here..."
+            className="input"
+          />
+        </div>
+
+        <div className="title">
+          <p>Origin B</p>
+
+          <input
+            type="text"
+            value={newRouteQuery.originB}
+            name="originB"
+            onChange={handleNewDist}
+            placeholder="enter address here..."
+            className="input"
+          />
+        </div>
+        <button className="calculate-button">Calculate Halfway</button>
+      </form>
+    </div>
   );
 
   // function postEvent(title, date, venue) {

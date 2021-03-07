@@ -1,0 +1,60 @@
+.inputs-container {
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 2px 8px 0 rgba(0, 0, 0, 0.19);
+  width: 60vw;
+  min-height: 10vw;
+  max-height: 15vw;
+  margin: 1vw;
+  padding: 1vw;
+  border-radius: 25px;
+  /* overflow-y: auto; */
+  background-color: rgba(255, 255, 255, 0.7);
+  /* border: 2px solid red; */
+}
+
+.form {
+  display: flex;
+  justify-content: space-around;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2vw;
+  padding: 0.5vw;
+}
+
+.calculate-button {
+  align-self: flex-end;
+  font-size: 1vw;
+  min-height: 3vw;
+  max-height: 3vw;
+  min-width: 10vw;
+  max-width: 5vw;
+  margin: 0.5vw;
+
+  background-color: rgba(181, 101, 29, 0.5);
+  border-style: none;
+  outline: none;
+  border-radius: 4px;
+  color: Black;
+  margin-bottom: 1vw;
+  border: 1px solid lightgray;
+
+  text-align: center;
+}
+
+.input {
+  font-size: 1.5vw;
+  min-height: 3vw;
+  max-height: 15vw;
+  min-width: 20vw;
+  max-width: 5vw;
+  margin: 0.5vw;
+
+  border-radius: 4px;
+  border-style: none;
+  border: 1px solid lightgray;
+  outline: none;
+  padding-left: 0.5vw;
+}

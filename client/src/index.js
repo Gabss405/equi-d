@@ -6,8 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-    <div className="map-legend">
+    <App style={{ position: "relative", zIndex: "1" }} />
+    {/* <div className="map-legend">
       <div>
         <p style={{ color: "green" }}>Green: OriginA</p>
         <p style={{ color: "blue" }}> Blue: Origin B</p>
@@ -30,7 +30,7 @@ ReactDOM.render(
         <li>still within margin for 8hrs+ drives (stop for petrol etc.)</li>
         <li>lake/bridge problem</li>
       </ul>
-    </div>
+    </div> */}
   </React.StrictMode>,
   document.getElementById("root")
 );

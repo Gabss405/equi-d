@@ -1,15 +1,27 @@
-.App {
-  border: 5px solid red;
-}
 .app-container {
+  display: flex;
+  justify-content: center;
+
   /* height: 100%;
   width: 100%; */
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  /* border: 2px solid green; */
+  /* display: flex; */
+  /* justify-content: space-around;
+  align-items: center; */
 }
 .map-form-container {
+  display: flex;
+  /* border: 5px solid yellow; */
+  margin-top: 3vw;
 }
-.map-container {
+/* .map-container {
+  width: 150px;
+  height: 350px;
+  top: 10px;
+  left: 10px;
+} */
+
+.landing {
+  /* border: 5px solid green; */
+  height: fit-content;
+  width: fit-content;
 }

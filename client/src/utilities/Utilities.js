@@ -10,8 +10,36 @@ function secondsToTime(d) {
   return hDisplay + mDisplay + sDisplay;
 }
 
+function pinSymbol(color) {
+  return {
+    path:
+      "M 0,0 C -2,-20 -10,-22 -10,-30 A 10,10 0 1,1 10,-30 C 10,-22 2,-20 0,0 z",
+    fillColor: color,
+    fillOpacity: 1,
+    strokeColor: "#000",
+    strokeWeight: 2,
+    scale: 1,
+  };
+}
+
+function optimiseZoom(routeObj) {
+  let routeDistance = routeObj.routes[0].legs[0].distance.value;
+  let zoomlevel = 5;
+  console.log(routeDistance);
+  if (routeDistance <= 200000) zoomlevel = 11;
+  if (routeDistance <= 335364) zoomlevel = 10;
+  if (routeDistance <= 1108239) zoomlevel = 8;
+  if (routeDistance < 2000000) zoomlevel = 7;
+  if (routeDistance < 3000000) zoomlevel = 6;
+  if (routeDistance > 3000000) zoomlevel = 5;
+  return zoomlevel;
+}
+// optimiseZoom()
+
 const Utilities = {
   secondsToTime,
+  pinSymbol,
+  optimiseZoom,
 };
 
 export default Utilities;
