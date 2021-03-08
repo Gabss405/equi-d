@@ -17,7 +17,7 @@ function secondsToTime(d) {
 ///////////////////////// POLYLINE MALARKEY START ///////////////////////////////
 // takes a route object and returns array of all polylines from route
 
-function polylineDecoder(routes) {
+function polylineDecoderMulti(routes) {
   let routePolylineCoordinates = {};
 
   routePolylineCoordinates.route = [];
@@ -37,6 +37,14 @@ function polylineDecoder(routes) {
     });
   });
 
+  return routePolylineCoordinates;
+}
+
+function polylineDecoder(route) {
+  let routePolylineCoordinates = [];
+  polyline.decode(route.routes[0].overview_polyline.points).forEach((item) => {
+    routePolylineCoordinates.push({ lat: item[0], lng: item[1] });
+  });
   return routePolylineCoordinates;
 }
 
@@ -82,6 +90,7 @@ function polyPrecision(route, polyline, distancematrix, polytimeunit) {
 module.exports = {
   secondsToTime,
   polylineDecoder,
+  polylineDecoderMulti,
   polyTimeCalc,
   polyPrecision,
 };

@@ -6,9 +6,14 @@ function fetchMidpointByPlaceIDService({ placeA_id, placeB_id }) {
   return fetch(`http://localhost:3015/getroutes/${placeA_id}/${placeB_id}`);
 }
 
+function fetchRandomCity() {
+  return fetch(`http://localhost:3015/getrandomcity`);
+}
+
 const ApiServices = {
   fetchMidpointByNameService,
   fetchMidpointByPlaceIDService,
+  fetchRandomCity,
 };
 
 export default ApiServices;

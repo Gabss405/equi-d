@@ -1,14 +1,16 @@
+@font-face {
+  font-family: 'Johnston';
+  src: url('./assets/fonts/London-Tube.woff2') format('woff2'), url('./assets/fonts/London-Tube.woff') format('woff'), url('./assets/fonts/London-Tube.ttf') format('ttf'),
+    url('./assets/fonts/London-Tube.eot') format('eot');
+}
+
 body {
   margin: 0;
-
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: 'Johnston';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }

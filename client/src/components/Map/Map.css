@@ -1,0 +1,37 @@
+.infowindow {
+  background: #fee9e1;
+  border: 1px solid #ccc;
+  padding: 0.5vw;
+  height: 3vw;
+  width: 8vw;
+  font-family: 'Johnston';
+  font-size: 1vw;
+  text-align: center;
+}
+.gm-style .gm-style-iw-c {
+  position: absolute;
+  box-sizing: border-box;
+  /* overflow: hidden; */
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -100%);
+  background-color: white;
+  border-radius: 12px;
+  padding: 0.5vw;
+  box-shadow: 0 2px 7px 1px rgb(0 0 0 / 30%);
+}
+
+.gm-style .gm-style-iw-d {
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+p {
+  padding: 1px;
+  margin: 5px;
+}
+
+.places-infowindow {
+  font-family: 'Johnston';
+  text-align: center;
+}

@@ -1,22 +1,26 @@
-import "./MapForm.css";
-import { useState } from "react";
-import ApiServices from "../../services/ApiServices";
-import { Autocomplete, LoadScript } from "@react-google-maps/api";
+import './MapForm.css';
+import { useState } from 'react';
+import ApiServices from '../../services/ApiServices';
+import { Autocomplete, LoadScript } from '@react-google-maps/api';
+import PlacesAutocomplete from '../Places/PlacesAutocomplete';
+
+import placeSuggestions from '../Places/places';
+import logo from '../../assets/logo3.png';
 
 const ApiKey = process.env.REACT_APP_API_KEY;
 
 // const libraries = ["places"];
 
-function MapForm({ setRouteData }) {
+function MapForm({ setRouteData, setShowAnswer, setCity }) {
   // const [textOrigins, setNewTextOrigins] = useState({
   //   originA: "",
   //   originB: "",
   // });
   const [autocompleteOrigins, setNewAutocompleteOrigins] = useState({
-    placeA: "",
-    placeB: "",
+    placeA: '',
+    placeB: '',
   });
-  const [libraries] = useState(["places"]);
+  const [libraries] = useState(['places']);
   const [autocompleteA, setAutocompleteA] = useState(null);
   const [autocompleteB, setAutocompleteB] = useState(null);
 
@@ -60,12 +64,15 @@ function MapForm({ setRouteData }) {
       .then((res) => (res.status !== 204 ? res.json() : res))
       .then((res) => setRouteData(res))
       .catch((err) => {
-        console.error("Fetch Error: ", err);
+        console.error('Fetch Error: ', err);
       });
-    setNewAutocompleteOrigins({
-      placeA: "",
-      placeB: "",
-    });
+    setShowAnswer(false);
+    setCity('');
+
+    // setNewAutocompleteOrigins({
+    //   placeA: '',
+    //   placeB: '',
+    // });
   };
 
   // const handleSubmit = (e) => {
@@ -88,50 +95,52 @@ function MapForm({ setRouteData }) {
 
   return (
     <LoadScript googleMapsApiKey={ApiKey} libraries={libraries}>
-      <div className="inputs-container">
-        <form className="form" onSubmit={handleSubmit}>
-          <div className="autocomplete"></div>
+      <div className="top-navbar">
+        <div className="logo-container">
+          {' '}
+          <img className="logo" src={logo} />
+        </div>
+        <div className="equi-d"> Equi-d </div>
+        <div className="inputs-container">
+          <form className="form" onSubmit={handleSubmit}>
+            <div className="autocomplete"></div>
 
-          <div className="title">
-            <p>Origin A</p>
-            <Autocomplete
-              onLoad={onLoadA}
-              fields={["place_id"]}
-              onPlaceChanged={handlePlaceChanged}
-              value={autocompleteOrigins.placeA}
-            >
-              <input
-                type="text"
-                // value={textOrigins.originA}
-                // name="originA"
-                // onChange={handleManualChange}
-                placeholder="enter address here..."
-                className="input"
-              />
-            </Autocomplete>
-          </div>
+            <div className="title">
+              {/* <p>Origin A</p> */}
+              <Autocomplete onLoad={onLoadA} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeA}>
+                <input
+                  type="text"
+                  required={true}
+                  // value={textOrigins.originA}
+                  // name="originA"
+                  // onChange={handleManualChange}
+                  placeholder="enter address here..."
+                  className="input"
+                />
+              </Autocomplete>
+            </div>
+            <button className="calculate-button">Find halfway...</button>
+            <div className="title">
+              <Autocomplete onLoad={onLoadB} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeB}>
+                <input
+                  type="text"
+                  required={true}
+                  // onFocus -- lok up in docs
 
-          <div className="title">
-            <p>Origin B</p>
-
-            <Autocomplete
-              onLoad={onLoadB}
-              fields={["place_id"]}
-              onPlaceChanged={handlePlaceChanged}
-              value={autocompleteOrigins.placeB}
-            >
-              <input
-                type="text"
-                // value={textOrigins.originB}
-                // name="originB"
-                // onChange={handleManualChange}
-                placeholder="enter address here..."
-                className="input"
-              />
-            </Autocomplete>
-          </div>
-          <button className="calculate-button">Calculate Halfway</button>
-        </form>
+                  // value={textOrigins.originB}
+                  // name="originB"
+                  // onChange={handleManualChange}
+                  placeholder="enter address here..."
+                  className="input"
+                />
+              </Autocomplete>
+              <div>
+                <PlacesAutocomplete suggestions={placeSuggestions}></PlacesAutocomplete>
+              </div>
+              {/* <p>Origin B</p> */}
+            </div>
+          </form>
+        </div>
       </div>
     </LoadScript>
   );

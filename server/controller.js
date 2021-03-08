@@ -1,24 +1,40 @@
 'use strict';
 
-const { fetchBothDirections, fetchDirectionsById, fetchDistanceMatrix, fetchDirection } = require('./services');
-const { polylineDecoder, polyTimeCalc, polyPrecision } = require('./utilities');
+const { fetchBothDirections, fetchDirectionsById, fetchDistanceMatrix, fetchDirection, fetchNearbyPlaces } = require('./services');
+const { polylineDecoder, polylineDecoderMulti, polyTimeCalc, polyPrecision } = require('./utilities');
 const polyline = require('@mapbox/polyline');
+const cities = require('./cities.json');
+const lookup = require('country-code-lookup');
 
 //TODO : when triangulate compare route from first halfpoint to point in front
 //TODO : compare total duration travelled by all parties to other solutions
 //TODO : refactor function in utils so it calculates this from route[0].legs[0].duration.value:
 
+exports.getRandomCity = async (_, res) => {
+  try {
+    const randomCity = await cities[Math.floor(Math.random() * cities.length)];
+    const randomCityCountry = lookup.byIso(randomCity.country).country;
+
+    res.status(201);
+    res.send({ name: randomCity.name, country: randomCityCountry, location: { lat: +randomCity.lat, lng: +randomCity.lng } });
+  } catch (error) {
+    console.log('GET ERROR', error);
+    res.status(500);
+    res.send(error);
+  }
+};
 exports.getRoute = async (req, res) => {
   //console.log(req.params);
   try {
     //1. fetch route objects from gmaps API, it returns two route objects in an object: routes.route is A->B and routes.etuor is B->A
 
     const routes = await fetchDirectionsById(req.params);
+    // console.log(routes);
     // console.log(routes.etuor);
     //2. get the decoded polyline coordinates
     // returns an object of 2 arrays: .route and .etuor
 
-    const decodedPolylines = await polylineDecoder(routes);
+    const decodedPolylines = await polylineDecoderMulti(routes);
 
     //3. extract midpoint roughly on both arrays (returns an obj of 2 objs with props: .route and .etuor)
 
@@ -75,28 +91,33 @@ exports.getRoute = async (req, res) => {
     // const a2TrueHalfway = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, trueHalfway.location);
     // const b2TrueHalfway = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, trueHalfway.location);
 
+    const nearbyPlaces = await fetchNearbyPlaces(trueHalfway.location, 500, 'restaurant');
+
     const a2TrueHalfwayDirections = await fetchDirection(routes.route.routes[0].legs[0].start_location, trueHalfway.location);
     const b2TrueHalfwayDirections = await fetchDirection(routes.etuor.routes[0].legs[0].start_location, trueHalfway.location);
 
     // console.log(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points);
+    // console.log(polyline.decode(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points));
 
-    const a2TrueHalfwayPolyline = [];
-    const b2TrueHalfwayPolyline = [];
+    const a2TrueHalfwayDecodedPolyline = polylineDecoder(a2TrueHalfwayDirections);
+    const b2TrueHalfwayDecodedPolyline = polylineDecoder(b2TrueHalfwayDirections);
 
-    polyline.decode(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points).forEach((item) => a2TrueHalfwayPolyline.push(item));
-
-    polyline.decode(b2TrueHalfwayDirections.route.routes[0].overview_polyline.points).forEach((item) => b2TrueHalfwayPolyline.push(item));
-
-    console.log('polyline: ', a2TrueHalfwayPolyline);
+    const a2TrueHalfwayDecodedPolylineMidPoint = a2TrueHalfwayDecodedPolyline[Math.floor(a2TrueHalfwayDecodedPolyline.length / 2)];
+    const b2TrueHalfwayDecodedPolylineMidPoint = b2TrueHalfwayDecodedPolyline[Math.floor(b2TrueHalfwayDecodedPolyline.length / 2)];
 
     const resObject = {
       route: routes.route,
       etuor: routes.etuor,
       routePolyTimeUnit,
       etuorPolyTimeUnit,
-      a2TrueHalfwayPolyline,
-      b2TrueHalfwayPolyline,
       trueHalfway,
+      a2TrueHalfwayDirections,
+      b2TrueHalfwayDirections,
+      a2TrueHalfwayDecodedPolyline,
+      b2TrueHalfwayDecodedPolyline,
+      a2TrueHalfwayDecodedPolylineMidPoint,
+      b2TrueHalfwayDecodedPolylineMidPoint,
+      nearbyPlaces,
     };
 
     res.send(resObject);

@@ -1,27 +1,111 @@
 .app-container {
   display: flex;
-  justify-content: center;
-
-  /* height: 100%;
-  width: 100%; */
-  /* display: flex; */
-  /* justify-content: space-around;
-  align-items: center; */
+  flex-direction: column;
 }
 .map-form-container {
   display: flex;
   /* border: 5px solid yellow; */
-  margin-top: 3vw;
+  margin-top: 0vw;
+  width: 100%;
+  background-color: #b09e99;
 }
-/* .map-container {
-  width: 150px;
-  height: 350px;
-  top: 10px;
-  left: 10px;
-} */
 
-.landing {
-  /* border: 5px solid green; */
-  height: fit-content;
-  width: fit-content;
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  bottom: 0px;
+  width: 100%;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3vw;
+
+  transition: height 0.2s ease-in; /* Use transition for 'height' or all */
+
+  /* overflow-y: auto; */
+  background-color: #64b6ac;
 }
+
+.footer-rest a {
+  padding-right: 3vw;
+  color: #fad4c0;
+  text-decoration: none;
+}
+.footer-copyright {
+  padding-left: 2vw;
+  color: #fad4c0;
+  font-size: 1vw;
+}
+.footer-social-media {
+  color: #fad4c0;
+  font-size: 1vw;
+  text-decoration: none;
+}
+
+.google-link {
+  color: inherit;
+  text-decoration: inherit;
+}
+.google-link:hover {
+  background: transparent;
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px solid transparent;
+  text-shadow: 1px 1px 1px transparent;
+  color: #b09e99;
+}
+.game {
+  display: flex;
+  width: 20vw;
+}
+
+.tcp:hover {
+  background: transparent;
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px solid transparent;
+  text-shadow: 1px 1px 1px transparent;
+  color: #b09e99;
+}
+.where-is-this {
+  align-self: flex-start;
+  color: #fad4c0;
+  font-size: 1vw;
+  border: none;
+  font-family: inherit;
+  padding: 0;
+  background: transparent;
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px solid transparent;
+  text-shadow: 0px 0px 0px transparent;
+}
+
+.where-is-this:hover {
+  background: transparent;
+  box-shadow: 0px 0px 0px transparent;
+  border: 0px solid transparent;
+  text-shadow: 1px 1px 1px transparent;
+  color: #b09e99;
+}
+.where-is-this:active {
+  outline: none;
+  border: none;
+}
+
+.where-is-this:focus {
+  outline: 0;
+}
+.answer {
+  align-self: flex-end;
+  color: #fad4c0;
+  font-size: 1vw;
+  padding-left: 2vw;
+  font-weight: bold;
+}
+
+footer:hover {
+  height: 10%; /* Change the height of the footer as the half of the screen */
+}
+
+/* https://coolors.co/fec0aa-ec4e20-84732b-574f2a-1c3a13 */
