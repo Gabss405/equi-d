@@ -1,7 +1,8 @@
 'use strict';
 
-const { fetchDirections, fetchDirectionsById, fetchDistanceMatrix } = require('./services');
-const { secondsToTime, polylineDecoder, polyTimeCalc, polyPrecision } = require('./utilities');
+const { fetchBothDirections, fetchDirectionsById, fetchDistanceMatrix, fetchDirection } = require('./services');
+const { polylineDecoder, polyTimeCalc, polyPrecision } = require('./utilities');
+const polyline = require('@mapbox/polyline');
 
 //TODO : when triangulate compare route from first halfpoint to point in front
 //TODO : compare total duration travelled by all parties to other solutions
@@ -71,18 +72,31 @@ exports.getRoute = async (req, res) => {
 
     let trueHalfway = routePrecMidDM.rows[0].elements[0].duration.value < etuorPrecMidDM.rows[0].elements[0].duration.value ? precPolyMidPointEtuor : precPolyMidPointRoute;
 
-    const a2TrueHalfway = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, trueHalfway.location);
-    const b2TrueHalfway = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, trueHalfway.location);
+    // const a2TrueHalfway = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, trueHalfway.location);
+    // const b2TrueHalfway = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, trueHalfway.location);
+
+    const a2TrueHalfwayDirections = await fetchDirection(routes.route.routes[0].legs[0].start_location, trueHalfway.location);
+    const b2TrueHalfwayDirections = await fetchDirection(routes.etuor.routes[0].legs[0].start_location, trueHalfway.location);
+
+    // console.log(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points);
+
+    const a2TrueHalfwayPolyline = [];
+    const b2TrueHalfwayPolyline = [];
+
+    polyline.decode(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points).forEach((item) => a2TrueHalfwayPolyline.push(item));
+
+    polyline.decode(b2TrueHalfwayDirections.route.routes[0].overview_polyline.points).forEach((item) => b2TrueHalfwayPolyline.push(item));
+
+    console.log('polyline: ', a2TrueHalfwayPolyline);
 
     const resObject = {
       route: routes.route,
       etuor: routes.etuor,
       routePolyTimeUnit,
       etuorPolyTimeUnit,
+      a2TrueHalfwayPolyline,
+      b2TrueHalfwayPolyline,
       trueHalfway,
-      a2TrueHalfway,
-      b2TrueHalfway,
-      decodedPolylines,
     };
 
     res.send(resObject);

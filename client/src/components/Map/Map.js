@@ -31,7 +31,7 @@ function Map({ routeData }) {
     setCurrentPosition(currentPosition);
   };
 
-  console.log(currentPosition);
+  //
 
   let zoomLevel = 5;
   // routeData obj = {

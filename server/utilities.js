@@ -1,6 +1,6 @@
 'use strict';
 
-var polyline = require('@mapbox/polyline'); // encodes and decodees polylines https://www.npmjs.com/package/@mapbox/polyline
+const polyline = require('@mapbox/polyline'); // encodes and decodees polylines https://www.npmjs.com/package/@mapbox/polyline
 
 function secondsToTime(d) {
   d = Number(d);
