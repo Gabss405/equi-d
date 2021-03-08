@@ -34,19 +34,18 @@ function Map({ routeData }) {
   //
 
   let zoomLevel = 5;
-  // routeData obj = {
-  //     route: routes.route,
-  //     etuor: routes.etuor,
-  //     routePolyTimeUnit,
-  //     etuorPolyTimeUnit,
-  //     trueHalfway,
-  //     a2TrueHalfway,
-  //     b2TrueHalfway,
-  //     trueHalfway,
-  //   }
 
-  let routePolyPath = [];
-  let etuorPolyPath = [];
+  // route: routes.route,
+  // etuor: routes.etuor,
+  // routePolyTimeUnit,
+  // etuorPolyTimeUnit,
+  // trueHalfway,
+  // a2TrueHalfwayDirections,
+  // b2TrueHalfwayDirections,
+  // a2TrueHalfwayDecodedPolyline,
+  // b2TrueHalfwayDecodedPolyline,
+  // let routePolyPath = [];
+  // let routeData.b2TrueHalfwayDecodedPolyline  = [];
 
   let routePolylineOptions = {
     strokeColor: "orange",
@@ -79,23 +78,23 @@ function Map({ routeData }) {
   };
 
   if (routeData) {
-    console.log(routeData.decodedPolylines.route);
+    //console.log(routeData.decodedPolylines.route);
 
-    routeData.decodedPolylines.route.map((item) => {
-      if (item.id <= routeData.trueHalfway.id)
-        routePolyPath.push(item.location);
-    });
+    // routeData.decodedPolylines.route.map((item) => {
+    //   if (item.id <= routeData.trueHalfway.id)
+    //     routePolyPath.push(item.location);
+    // });
 
-    console.log(routePolyPath);
-    routeData.decodedPolylines.etuor.map((item) => {
-      if (item.id <= routeData.trueHalfway.id)
-        etuorPolyPath.push(item.location);
-    });
+    // console.log(routePolyPath);
+    // routeData.decodedPolylines.etuor.map((item) => {
+    //   if (item.id <= routeData.trueHalfway.id)
+    //     routeData.b2TrueHalfwayDecodedPolyline .push(item.location);
+    // });
 
-    console.log(etuorPolyPath);
+    // console.log(routeData.b2TrueHalfwayDecodedPolyline );
 
-    routePolylineOptions.paths = routePolyPath;
-    etuorPolylineOptions.paths = etuorPolyPath;
+    routePolylineOptions.paths = routeData.a2TrueHalfwayDecodedPolyline;
+    etuorPolylineOptions.paths = routeData.b2TrueHalfwayDecodedPolyline;
 
     console.log(
       "Optimal Halfway Duration(OHD) from A->A/B: ",
@@ -122,26 +121,17 @@ function Map({ routeData }) {
 
     console.log(
       "It takes ",
-      Utilities.secondsToTime(
-        routeData.a2TrueHalfway.rows[0].elements[0].duration.value
-      ),
+      routeData.a2TrueHalfwayDirections.routes[0].legs[0].duration.text,
       " to get from Origin A to true halfway"
     );
 
     console.log(
       "It takes ",
-      Utilities.secondsToTime(
-        routeData.b2TrueHalfway.rows[0].elements[0].duration.value
-      ),
+      routeData.b2TrueHalfwayDirections.routes[0].legs[0].duration.text,
       " to get from Origin B to true halfway "
     );
 
-    console.log(routeData.b2TrueHalfway.rows[0].elements[0]);
-    //TODO : route display polyline
-
     //TODO : optimize zoom
-
-    //console.log(routeData.route.routes[0].legs[0]);
 
     zoomLevel = Utilities.optimiseZoom(routeData.route);
     // console.log(polylineOptions.paths);
@@ -176,7 +166,7 @@ function Map({ routeData }) {
 
   return (
     <LoadScript googleMapsApiKey={ApiKey} libraries={["places"]}>
-      {routeData?.trueHalfway?.location && routePolyPath ? (
+      {routeData?.trueHalfway?.location ? (
         <GoogleMap
           options={{
             styles: retroLabels,
@@ -202,59 +192,60 @@ function Map({ routeData }) {
             icon={pinSymbol("lightblue")}
             // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
           ></Marker> */}
-          {routePolyPath ? (
+          {routeData?.a2TrueHalfwayDecodedPolyline ? (
             <div>
               <Polyline
                 onLoad={(polyline) => {}}
-                path={routePolyPath}
+                path={routeData.a2TrueHalfwayDecodedPolyline}
                 options={routePolylineOptions}
               />
               <div>
-                {routePolyPath && (
-                  <Marker>
-                    <InfoWindow
-                      onLoad={() => {}}
-                      position={routePolyPath[routePolyPath.length / 2]}
-                    >
-                      <div style={divStyle}>
-                        <p>
-                          {`It takes
-                    ${Utilities.secondsToTime(
-                      routeData.a2TrueHalfway.rows[0].elements[0].duration.value
-                    )}
+                {/* {routeData.a2TrueHalfwayDecodedPolyline && (
+                  <InfoWindow onLoad={() => {}}>
+                    <div style={divStyle}>
+                      <p>
+                        {`It takes
+                    ${routeData.a2TrueHalfwayDirections.routes[0].legs[0].duration.text}
                     to get from
                     ${routeData.route.routes[0].legs[0].start_address} to true
                     halfway`}
-                        </p>
-                      </div>
-                    </InfoWindow>
-                  </Marker>
-                )}
+                      </p>
+                    </div>
+                  </InfoWindow>
+                )} */}
               </div>
             </div>
           ) : (
             <> Loading </>
           )}
 
-          {etuorPolyPath ? (
+          {routeData?.b2TrueHalfwayDecodedPolyline ? (
             <div>
               <Polyline
                 onLoad={(polyline) => {}}
-                path={etuorPolyPath}
+                path={routeData.b2TrueHalfwayDecodedPolyline}
                 options={etuorPolylineOptions}
               />
-              {etuorPolyPath && (
-                <Marker>
+              {/* {routeData.b2TrueHalfwayDecodedPolyline && (
+                <Marker
+                  position={
+                    routeData.b2TrueHalfwayDecodedPolyline[
+                      routeData.b2TrueHalfwayDecodedPolyline.length / 2
+                    ]
+                  }
+                >
                   <InfoWindow
                     onLoad={() => {}}
-                    position={etuorPolyPath[etuorPolyPath.length / 2]}
+                    position={
+                      routeData.b2TrueHalfwayDecodedPolyline[
+                        routeData.b2TrueHalfwayDecodedPolyline.length / 2
+                      ]
+                    }
                   >
                     <div style={divStyle}>
                       <p>
                         {`It takes
-                    ${Utilities.secondsToTime(
-                      routeData.b2TrueHalfway.rows[0].elements[0].duration.value
-                    )}
+                    ${routeData.b2TrueHalfwayDirections.routes[0].legs[0].duration.text}
                     to get from
                     ${routeData.etuor.routes[0].legs[0].start_address} to true
                     halfway`}
@@ -262,7 +253,7 @@ function Map({ routeData }) {
                     </div>
                   </InfoWindow>
                 </Marker>
-              )}
+              )} */}
             </div>
           ) : (
             <> </>
