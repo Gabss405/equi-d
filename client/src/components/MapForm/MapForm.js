@@ -1,10 +1,9 @@
 import './MapForm.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ApiServices from '../../services/ApiServices';
 import { Autocomplete, LoadScript } from '@react-google-maps/api';
-import PlacesAutocomplete from '../Places/PlacesAutocomplete';
+// import PlacesAutocomplete from '../__Places/PlacesAutocomplete';
 
-import placeSuggestions from '../Places/places';
 import logo from '../../assets/logo3.png';
 
 const ApiKey = process.env.REACT_APP_API_KEY;
@@ -23,6 +22,9 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
   const [libraries] = useState(['places']);
   const [autocompleteA, setAutocompleteA] = useState(null);
   const [autocompleteB, setAutocompleteB] = useState(null);
+  const [travelMode, setTravelMode] = useState('driving');
+  const [checked, setChecked] = useState({ driving: false, bicycling: false, walking: false });
+  const [placeType, setPlaceType] = useState(null);
 
   // const [libraries] = useState(["places"]);
   // const [place, setNewPlace] = useState("");
@@ -45,20 +47,32 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
       });
   };
 
-  // const handleManualChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setNewTextOrigins({
-  //     ...textOrigins,
-  //     [name]: value,
-  //   });
-  // };
+  const onValueChange = (e) => {
+    // e.preventDefault();
+    setTravelMode(e.target.value);
+    console.log(e.target.value);
+    if (e.target.value === 'driving') setChecked({ driving: true, bicycling: false, walking: false });
+    if (e.target.value === 'bicycling') setChecked({ driving: false, bicycling: true, walking: false });
+    if (e.target.value === 'walking') setChecked({ driving: false, bicycling: false, walking: true });
+    console.log(checked);
+  };
+
+  const handleChangeType = (e) => {
+    console.log(e.target.value);
+    if (e.target.value === 'none') setPlaceType(null);
+    setPlaceType(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // console.log('placetype:',placeType);
+
     ApiServices.fetchMidpointByPlaceIDService({
       placeA_id: autocompleteOrigins.placeA.place_id,
       placeB_id: autocompleteOrigins.placeB.place_id,
+      mode: travelMode,
+      type: placeType,
     })
       .then((res) => (res.status < 400 ? res : Promise.reject()))
       .then((res) => (res.status !== 204 ? res.json() : res))
@@ -68,6 +82,7 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
       });
     setShowAnswer(false);
     setCity('');
+    setChecked({ driving: false, bicycling: false, walking: false });
 
     // setNewAutocompleteOrigins({
     //   placeA: '',
@@ -103,40 +118,57 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
         <div className="equi-d"> Equi-d </div>
         <div className="inputs-container">
           <form className="form" onSubmit={handleSubmit}>
-            <div className="autocomplete"></div>
-
-            <div className="title">
-              {/* <p>Origin A</p> */}
+            <div className="origin">
+              <p>Origin A</p>
               <Autocomplete onLoad={onLoadA} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeA}>
-                <input
-                  type="text"
-                  required={true}
-                  // value={textOrigins.originA}
-                  // name="originA"
-                  // onChange={handleManualChange}
-                  placeholder="enter address here..."
-                  className="input"
-                />
+                <input type="text" required={true} placeholder="enter address here..." className="input" onDoubleClick={(e) => e.target.reset} />
               </Autocomplete>
             </div>
-            <button className="calculate-button">Find halfway...</button>
-            <div className="title">
-              <Autocomplete onLoad={onLoadB} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeB}>
-                <input
-                  type="text"
-                  required={true}
-                  // onFocus -- lok up in docs
-
-                  // value={textOrigins.originB}
-                  // name="originB"
-                  // onChange={handleManualChange}
-                  placeholder="enter address here..."
-                  className="input"
-                />
-              </Autocomplete>
-              <div>
-                <PlacesAutocomplete suggestions={placeSuggestions}></PlacesAutocomplete>
+            <div className="map-form-middle">
+              <div className="select-travel-mode" onChange={onValueChange}>
+                Drive
+                <input type="radio" value="driving" name="mode" className="driving" checked={travelMode === 'driving'} />
+                Cycle
+                <input type="radio" value="bicycling" name="mode" className="bicycling" checked={travelMode === 'bicycling'} />
+                Walk
+                <input type="radio" value="walking" name="mode" className="on-foot" checked={travelMode === 'walking'} />
               </div>
+              <button className="calculate-button">Find halfway...</button>
+              <div className="place-type-select">
+                <select value={placeType} onChange={handleChangeType} className="place-dropdown">
+                  <option value="none">None</option>
+                  <option value="art_gallery">Art Galleries</option>
+                  <option value="bar">Bars</option>
+                  <option value="cafe">Cafes</option>
+                  <option value="campground">Campgrounds</option>
+                  <option value="movie-theatre">Cinemas</option>
+                  <option value="museum">Museums</option>
+                  <option value="night_club">Clubs</option>
+                  <option value="park">Parks</option>
+                  <option value="restaurant">Restaurants</option>
+                  <option value="shopping_mall">Shopping Mall</option>
+                  <option value="tourist_attraction">Tourist Attractions</option>
+                </select>
+              </div>
+            </div>
+            <div className="title">
+              <div className="origin">
+                <p>Origin B</p>
+                <Autocomplete onLoad={onLoadB} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeB}>
+                  <input
+                    type="text"
+                    required={true}
+                    // onFocus -- lok up in docs
+
+                    // value={textOrigins.originB}
+                    // name="originB"
+                    // onChange={handleManualChange}
+                    placeholder="enter address here..."
+                    className="input"
+                  />
+                </Autocomplete>
+              </div>
+              <div></div>
               {/* <p>Origin B</p> */}
             </div>
           </form>

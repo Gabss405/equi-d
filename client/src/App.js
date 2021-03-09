@@ -27,7 +27,7 @@ function App() {
     setLandingZoom(landingZoom - 2);
   };
 
-  console.log(city);
+  // console.log(city);
 
   return (
     <div className="app-container">

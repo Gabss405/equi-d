@@ -16,8 +16,8 @@
 
 .inputs-container {
   width: 70vw;
-  min-height: 2vw;
-  max-height: 5vw;
+  min-height: 11vw;
+  max-height: 15vw;
   margin-right: 10vw;
 
   /* overflow-y: auto; */
@@ -25,6 +25,41 @@
   /* border: 2px solid red; */
 }
 
+.place-type-select {
+  align-self: center;
+}
+.place-dropdown {
+  font-family: 'Johnston';
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.map-form-middle {
+  margin: 1vw;
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid red; */
+}
+
+.origin {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* border: 2px solid green; */
+}
+
+.origin p {
+  display: flex;
+  justify-content: center;
+  font-size: 2vw;
+  margin: 1vw;
+}
+
+.select-travel-mode {
+  display: flex;
+  justify-content: space-around;
+}
 .form {
   display: flex;
   justify-content: space-around;
@@ -55,7 +90,7 @@
 }
 
 .calculate-button {
-  align-self: flex-end;
+  align-self: center;
   font-family: 'Johnston';
   font-size: 1vw;
   min-height: 3vw;

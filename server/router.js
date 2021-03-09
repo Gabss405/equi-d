@@ -3,7 +3,7 @@
 const router = require('express').Router();
 const controller = require('./controller');
 
-router.get('/getroutes/:A/:B', controller.getRoute);
+router.get('/getroutes/:A/:B/:mode/:type', controller.getRoute);
 router.get('/getrandomcity', controller.getRandomCity);
 
 // // router.post("/topics", topicsController.postNewTopic);

@@ -6,7 +6,9 @@ import './Map.css';
 
 import Utilities from '../../utilities/Utilities';
 
-import { retro, retroLabels } from './map.styles/map.style';
+import markerSymbol from './map.styles/marker.png';
+
+import { retro, retroLabels, mapStyles, marker } from './map.styles/map.style';
 
 const ApiKey = process.env.REACT_APP_API_KEY;
 
@@ -71,11 +73,12 @@ function Map({ routeData, randomCity, landingZoom }) {
     zIndex: 2,
   };
 
-  let nearbyPlaces;
+  let nearbyPlaces = [];
 
-  if (routeData) {
-    routePolylineOptions.paths = routeData.a2TrueHalfwayDecodedPolyline;
-    etuorPolylineOptions.paths = routeData.b2TrueHalfwayDecodedPolyline;
+  if (routeData.nearbyPlaces) {
+    console.log(routeData);
+    // routePolylineOptions.paths = routeData.a2TrueHalfwayDecodedPolyline;
+    // etuorPolylineOptions.paths = routeData.b2TrueHalfwayDecodedPolyline;
 
     console.log('Optimal Halfway Duration(OHD) from A->A/B: ', Utilities.secondsToTime(routeData.route.routes[0].legs[0].duration.value / 2));
     console.log('Optimal Halfway Duration(OHD)  from B->B/A: ', Utilities.secondsToTime(routeData.etuor.routes[0].legs[0].duration.value / 2));
@@ -90,39 +93,45 @@ function Map({ routeData, randomCity, landingZoom }) {
 
     // zoomLevel = Utilities.optimiseZoom(routeData.route);
 
-    nearbyPlaces = routeData.nearbyPlaces.results.map((item) => {
-      return (
-        <Marker
-          key={item.place_id}
-          position={item.geometry.location}
-          title={item.name}
-          rating={item.rating}
-          // icon={marker}
-          icon={Utilities.pinSymbol('blue')}
-          // onClick={() => onSelect(route.routes[0].legs[0])}
-        >
-          {item.rating > 4.3 && (
-            <InfoWindow onLoad={() => {}} position={item.geometry.location}>
-              <div className="places-infowindow">
-                <p>{item.name}</p>
-                {item.rating > 4.3 && <p>{item.rating}⭐</p>}
-              </div>
-            </InfoWindow>
-          )}
-        </Marker>
-      );
-    });
+    console.log(routeData.nearbyPlaces);
+
+    if (Object.keys(routeData.nearbyPlaces).length > 0) {
+      nearbyPlaces = routeData.nearbyPlaces.results.map((item) => {
+        return (
+          <Marker
+            key={item.place_id}
+            position={item.geometry.location}
+            title={item.name}
+            rating={item.rating}
+            // icon={marker}
+            icon={Utilities.pinSymbol('blue')}
+            // onClick={() => onSelect(route.routes[0].legs[0])}
+          >
+            {item.rating > 4.3 && (
+              <InfoWindow onLoad={() => {}} position={item.geometry.location}>
+                <div className="places-infowindow">
+                  <p>{item.name}</p>
+                  {item.rating > 4.3 && <p>{item.rating}⭐</p>}
+                </div>
+              </InfoWindow>
+            )}
+          </Marker>
+        );
+      });
+    }
   }
 
-  const mapStyles = {
-    height: '52vw',
-    width: '100vw',
-  };
+  const handlePolylineClick = () => {};
 
   console.log(routeData);
 
-  const london = { lat: 51.50853, lng: -0.076132 };
+  //const london = { lat: 51.50853, lng: -0.076132 };
   const zoomRndm = Math.floor(Math.random() * 11) + 7;
+
+  const markerStyle = {
+    width: '0.5vw',
+    height: '0.5vw',
+  };
 
   return (
     <LoadScript googleMapsApiKey={ApiKey} libraries={['places']}>
@@ -142,7 +151,7 @@ function Map({ routeData, randomCity, landingZoom }) {
             center={routeData.trueHalfway.location}>
             {routeData.a2TrueHalfwayDecodedPolyline && (
               <div>
-                <Polyline onLoad={(polyline) => {}} path={routePolylineOptions.paths} options={routePolylineOptions} />
+                <Polyline onLoad={(polyline) => {}} path={routePolylineOptions.paths} options={routePolylineOptions} onClick={handlePolylineClick} />
 
                 {routeData?.a2TrueHalfwayDecodedPolylineMidPoint && (
                   <InfoWindow onLoad={() => {}} position={routeData.a2TrueHalfwayDecodedPolylineMidPoint}>
@@ -183,14 +192,16 @@ function Map({ routeData, randomCity, landingZoom }) {
               position={routeData.route.routes[0].legs[0].start_location}
               title="Origin A"
               // icon={marker}
-              icon={Utilities.pinSymbol('yellow')}
+              icon={markerSymbol}
               // onClick={() => onSelect(route.routes[0].legs[0])}
             ></Marker>
             <Marker
               position={routeData.etuor.routes[0].legs[0].start_location}
               title="Origin B"
               // icon={marker}
-              icon={Utilities.pinSymbol('blue')}
+              icon={markerSymbol}
+              className="origin-B"
+              options={{ style: markerStyle }}
               // onClick={() => onSelect(route.routes[0].legs[0])}
             ></Marker>
 

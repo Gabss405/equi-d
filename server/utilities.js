@@ -17,34 +17,59 @@ function secondsToTime(d) {
 ///////////////////////// POLYLINE MALARKEY START ///////////////////////////////
 // takes a route object and returns array of all polylines from route
 
-function polylineDecoderMulti(routes) {
+async function polylineDecoderMulti(routes, mode) {
   let routePolylineCoordinates = {};
 
   routePolylineCoordinates.route = [];
   routePolylineCoordinates.etuor = [];
 
-  polyline.decode(routes.route.routes[0].overview_polyline.points).forEach((item, index) => {
-    routePolylineCoordinates.route.push({
-      id: index + Date.now(),
-      location: { lat: item[0], lng: item[1] },
+  if (mode === 'driving') {
+    polyline.decode(routes.route.routes[0].overview_polyline.points).forEach((item, index) => {
+      routePolylineCoordinates.route.push({
+        id: index + Date.now(),
+        location: { lat: item[0], lng: item[1] },
+      });
     });
-  });
 
-  polyline.decode(routes.etuor.routes[0].overview_polyline.points).forEach((item, index) => {
-    routePolylineCoordinates.etuor.push({
-      id: index + Date.now(),
-      location: { lat: item[0], lng: item[1] },
+    polyline.decode(routes.etuor.routes[0].overview_polyline.points).forEach((item, index) => {
+      routePolylineCoordinates.etuor.push({
+        id: index + Date.now(),
+        location: { lat: item[0], lng: item[1] },
+      });
     });
-  });
 
+    return routePolylineCoordinates;
+  } else if (mode === 'bicycling' || mode === 'walking') {
+    polyline.decode(routes.route.routes[0].overview_polyline.points).forEach((item, index) => {
+      routePolylineCoordinates.route.push({
+        id: index + Date.now(),
+        location: { lat: item[0], lng: item[1] },
+      });
+    });
+
+    polyline.decode(routes.etuor.routes[0].overview_polyline.points).forEach((item, index) => {
+      routePolylineCoordinates.etuor.push({
+        id: index + Date.now(),
+        location: { lat: item[0], lng: item[1] },
+      });
+    });
+  }
   return routePolylineCoordinates;
 }
 
-function polylineDecoder(route) {
+async function polylineDecoder(route, mode) {
+  //console.log(route.routes[0]);
   let routePolylineCoordinates = [];
-  polyline.decode(route.routes[0].overview_polyline.points).forEach((item) => {
-    routePolylineCoordinates.push({ lat: item[0], lng: item[1] });
-  });
+  if (mode === 'driving') {
+    polyline.decode(route.routes[0].overview_polyline.points).forEach((item) => {
+      routePolylineCoordinates.push({ lat: item[0], lng: item[1] });
+    });
+  } else if (mode === 'bicycling' || mode === 'walking') {
+    polyline.decode(route.routes[0].overview_polyline.points).forEach((item) => {
+      routePolylineCoordinates.push({ lat: item[0], lng: item[1] });
+    });
+  }
+  //console.log(routePolylineCoordinates);
   return routePolylineCoordinates;
 }
 

@@ -23,8 +23,9 @@ exports.getRandomCity = async (_, res) => {
     res.send(error);
   }
 };
+
 exports.getRoute = async (req, res) => {
-  //console.log(req.params);
+  console.log('in the controller', req.params.type);
   try {
     //1. fetch route objects from gmaps API, it returns two route objects in an object: routes.route is A->B and routes.etuor is B->A
 
@@ -33,74 +34,78 @@ exports.getRoute = async (req, res) => {
     // console.log(routes.etuor);
     //2. get the decoded polyline coordinates
     // returns an object of 2 arrays: .route and .etuor
+    // console.log(routes);
 
-    const decodedPolylines = await polylineDecoderMulti(routes);
+    const decodedPolylines = await polylineDecoderMulti(routes, req.params.mode);
 
-    //3. extract midpoint roughly on both arrays (returns an obj of 2 objs with props: .route and .etuor)
+    // //3. extract midpoint roughly on both arrays (returns an obj of 2 objs with props: .route and .etuor)
+    // console.log(decodedPolylines);
 
     const polylineMidCoords = {
       route: decodedPolylines.route[Math.floor(decodedPolylines.route.length / 2)],
       etuor: decodedPolylines.etuor[Math.floor(decodedPolylines.etuor.length / 2)],
     };
-    //console.log("etuor mid", polylineMidCoords.etuor);
 
-    //console.log(polylineMidCoords);
-    // //4. fetching distance matrix to check how far in time provisional center is from start location  (start -> polylineMidCoords)
-    const routePolyMidDM = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, polylineMidCoords.route.location);
-    const etuorPolyMidDM = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, polylineMidCoords.etuor.location);
+    // //console.log("etuor mid", polylineMidCoords.etuor);
 
-    // console.log(etuorPolyMidDM);
+    // //console.log(polylineMidCoords);
+    // // //4. fetching distance matrix to check how far in time provisional center is from start location  (start -> polylineMidCoords)
+    const routePolyMidDM = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, polylineMidCoords.route.location, req.params.mode);
+    const etuorPolyMidDM = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, polylineMidCoords.etuor.location, req.params.mode);
 
-    // //5. calculate polyTimeUnit (total duration divided by total amount of polylines) to get a resolution,
-    // // returns number of seconds it takes from one polyline to antoher on an average
+    // console.log(etuorPolyMidDM.rows[0]);
+
+    // // //5. calculate polyTimeUnit (total duration divided by total amount of polylines) to get a resolution,
+    // // // returns number of seconds it takes from one polyline to antoher on an average
     const routePolyTimeUnit = polyTimeCalc(routes.route, decodedPolylines.route);
     const etuorPolyTimeUnit = polyTimeCalc(routes.etuor, decodedPolylines.etuor);
 
-    // console.log(routePolyTimeUnit);
-    // console.log(etuorPolyTimeUnit);
+    // // console.log(routePolyTimeUnit);
+    // // console.log(etuorPolyTimeUnit);
 
-    // //6. Polyprecision - if provisional center point is "behind" or "ahead" desired time based center,
-    // //it returns desired polyline point coordinates based on time difference and polytimeUnit:
+    // // //6. Polyprecision - if provisional center point is "behind" or "ahead" desired time based center,
+    // // //it returns desired polyline point coordinates based on time difference and polytimeUnit:
     const precPolyMidPointRoute = await polyPrecision(routes.route, decodedPolylines.route, routePolyMidDM, routePolyTimeUnit);
     const precPolyMidPointEtuor = await polyPrecision(routes.etuor, decodedPolylines.etuor, etuorPolyMidDM, etuorPolyTimeUnit);
 
-    // console.log(precPolyMidPointRoute);
-    // console.log(precPolyMidPointEtuor);
+    // // console.log(precPolyMidPointRoute);
+    // // console.log(precPolyMidPointEtuor);
 
-    //7. getting DM for A (start) to prec midpoint, and B (end) to compare travel times:
-    const routePrecMidDM = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, precPolyMidPointRoute.location);
-    const etuorPrecMidDM = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, precPolyMidPointEtuor.location);
-    // console.log(etuorPrecMidDM);
-    // console.log(
-    //   secondsToTime(etuorPrecMidDM.rows[0].elements[0].duration.value)
-    // );
+    // //7. getting DM for A (start) to prec midpoint, and B (end) to compare travel times:
+    const routePrecMidDM = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, precPolyMidPointRoute.location, req.params.mode);
+    const etuorPrecMidDM = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, precPolyMidPointEtuor.location, req.params.mode);
+    // // console.log(etuorPrecMidDM);
+    // // console.log(
+    // //   secondsToTime(etuorPrecMidDM.rows[0].elements[0].duration.value)
+    // // );
 
-    // console.log(precPolyMidPointEtuor);
+    // // console.log(precPolyMidPointEtuor);
 
     // let A = `${precPolyMidPointRoute.location.lat},${precPolyMidPointEtuor.location.lng}`;
     // let B = `${precPolyMidPointEtuor.location.lat},${precPolyMidPointEtuor.location.lng}`;
 
     // let trueHalfwayObj = await fetchRequestHelper(`https://maps.googleapis.com/maps/api/directions/json?` + `origin=${A}&destination=${B}&key=${anyApiKey}`);
 
-    // const trueHalfway = trueHalfwayObj
+    // const trueHalfway = trueHalfwayObj;
 
-    // [Math.floor(decodedPolylines.route.length / 2)]
+    // // [Math.floor(decodedPolylines.route.length / 2)]
 
     let trueHalfway = routePrecMidDM.rows[0].elements[0].duration.value < etuorPrecMidDM.rows[0].elements[0].duration.value ? precPolyMidPointEtuor : precPolyMidPointRoute;
 
     // const a2TrueHalfway = await fetchDistanceMatrix(routes.route.routes[0].legs[0].start_location, trueHalfway.location);
     // const b2TrueHalfway = await fetchDistanceMatrix(routes.etuor.routes[0].legs[0].start_location, trueHalfway.location);
 
-    const nearbyPlaces = await fetchNearbyPlaces(trueHalfway.location, 500, 'restaurant');
+    let nearbyPlaces = [];
+    if (req.params.type !== 'null') nearbyPlaces = await fetchNearbyPlaces(trueHalfway.location, 500, req.params.type);
 
-    const a2TrueHalfwayDirections = await fetchDirection(routes.route.routes[0].legs[0].start_location, trueHalfway.location);
-    const b2TrueHalfwayDirections = await fetchDirection(routes.etuor.routes[0].legs[0].start_location, trueHalfway.location);
+    const a2TrueHalfwayDirections = await fetchDirection(routes.route.routes[0].legs[0].start_location, trueHalfway.location, req.params.mode);
+    const b2TrueHalfwayDirections = await fetchDirection(routes.etuor.routes[0].legs[0].start_location, trueHalfway.location, req.params.mode);
 
-    // console.log(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points);
-    // console.log(polyline.decode(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points));
+    // // console.log(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points);
+    // // console.log(polyline.decode(a2TrueHalfwayDirections.route.routes[0].overview_polyline.points));
 
-    const a2TrueHalfwayDecodedPolyline = polylineDecoder(a2TrueHalfwayDirections);
-    const b2TrueHalfwayDecodedPolyline = polylineDecoder(b2TrueHalfwayDirections);
+    const a2TrueHalfwayDecodedPolyline = await polylineDecoder(a2TrueHalfwayDirections, req.params.mode);
+    const b2TrueHalfwayDecodedPolyline = await polylineDecoder(b2TrueHalfwayDirections, req.params.mode);
 
     const a2TrueHalfwayDecodedPolylineMidPoint = a2TrueHalfwayDecodedPolyline[Math.floor(a2TrueHalfwayDecodedPolyline.length / 2)];
     const b2TrueHalfwayDecodedPolylineMidPoint = b2TrueHalfwayDecodedPolyline[Math.floor(b2TrueHalfwayDecodedPolyline.length / 2)];
