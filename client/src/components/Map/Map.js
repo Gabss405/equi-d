@@ -15,6 +15,8 @@ const ApiKey = process.env.REACT_APP_API_KEY;
 function Map({ routeData, randomCity, landingZoom }) {
   //const [selected, setSelected] = useState("");
   const [currentPosition, setCurrentPosition] = useState({});
+  const [showPolylineA, setShowPolylineA] = useState(false);
+  const [showPolylineB, setShowPolylineB] = useState(false);
 
   const success = (position) => {
     navigator.geolocation.getCurrentPosition(success);
@@ -44,12 +46,12 @@ function Map({ routeData, randomCity, landingZoom }) {
   //     b2TrueHalfwayDecodedPolylineMidPoint,
 
   let routePolylineOptions = {
-    strokeColor: 'orange',
+    strokeColor: '#64b6ac',
     strokeOpacity: 0.8,
     strokeWeight: 8,
-    fillColor: 'orange',
+    fillColor: '#64b6ac',
     fillOpacity: 0.35,
-    clickable: false,
+    clickable: true,
     draggable: false,
     editable: false,
     visible: true,
@@ -59,12 +61,12 @@ function Map({ routeData, randomCity, landingZoom }) {
   };
 
   let etuorPolylineOptions = {
-    strokeColor: 'purple',
+    strokeColor: '#b09e99',
     strokeOpacity: 0.8,
     strokeWeight: 8,
-    fillColor: 'purple',
+    fillColor: '#64b6ac',
     fillOpacity: 0.35,
-    clickable: false,
+    clickable: true,
     draggable: false,
     editable: false,
     visible: true,
@@ -121,8 +123,18 @@ function Map({ routeData, randomCity, landingZoom }) {
     }
   }
 
-  const handlePolylineClick = () => {};
+  const handlePolylineAClick = () => {
+    setShowPolylineA(!showPolylineA);
+  };
 
+  const handlePolylineBClick = () => {
+    setShowPolylineB(!showPolylineB);
+  };
+
+  useEffect(() => {
+    console.log(showPolylineA);
+    console.log(showPolylineB);
+  }, [showPolylineA, showPolylineB]);
   console.log(routeData);
 
   //const london = { lat: 51.50853, lng: -0.076132 };
@@ -151,15 +163,12 @@ function Map({ routeData, randomCity, landingZoom }) {
             center={routeData.trueHalfway.location}>
             {routeData.a2TrueHalfwayDecodedPolyline && (
               <div>
-                <Polyline onLoad={(polyline) => {}} path={routePolylineOptions.paths} options={routePolylineOptions} onClick={handlePolylineClick} />
+                <Polyline onLoad={(polyline) => {}} path={routePolylineOptions.paths} options={routePolylineOptions} name="polylineA" onClick={handlePolylineAClick} />
 
-                {routeData?.a2TrueHalfwayDecodedPolylineMidPoint && (
+                {routeData?.a2TrueHalfwayDecodedPolylineMidPoint && showPolylineA && (
                   <InfoWindow onLoad={() => {}} position={routeData.a2TrueHalfwayDecodedPolylineMidPoint}>
                     <div className="infowindow">
-                      <p>
-                        {`${routeData.a2TrueHalfwayDirections.routes[0].legs[0].duration.text}
-                     to to halfway point`}
-                      </p>
+                      <p>{`${routeData.a2TrueHalfwayDirections.routes[0].legs[0].duration.text}`}</p>
                     </div>
                   </InfoWindow>
                 )}
@@ -167,14 +176,11 @@ function Map({ routeData, randomCity, landingZoom }) {
             )}
             {routeData.b2TrueHalfwayDecodedPolyline && (
               <div>
-                <Polyline onLoad={(polyline) => {}} path={etuorPolylineOptions.paths} options={etuorPolylineOptions} />
-                {routeData?.b2TrueHalfwayDecodedPolylineMidPoint && (
+                <Polyline onLoad={(polyline) => {}} path={etuorPolylineOptions.paths} options={etuorPolylineOptions} name="polylineB" onClick={handlePolylineBClick} />
+                {routeData?.b2TrueHalfwayDecodedPolylineMidPoint && showPolylineB && (
                   <InfoWindow onLoad={() => {}} position={routeData.b2TrueHalfwayDecodedPolylineMidPoint}>
                     <div className="infowindow">
-                      <p>
-                        {`${routeData.b2TrueHalfwayDirections.routes[0].legs[0].duration.text}
-                    to halfway point`}
-                      </p>
+                      <p>{`${routeData.b2TrueHalfwayDirections.routes[0].legs[0].duration.text}`}</p>
                     </div>
                   </InfoWindow>
                 )}
@@ -184,22 +190,22 @@ function Map({ routeData, randomCity, landingZoom }) {
             <Marker
               position={routeData.trueHalfway.location}
               title="Precise MidPoint"
-              icon={Utilities.pinSymbol('red')}
+              icon={Utilities.pinSymbol('#c0fdfb')}
               // onClick={() => onSelect(routeData.precPolyMidPoint.location)}
             ></Marker>
 
             <Marker
               position={routeData.route.routes[0].legs[0].start_location}
               title="Origin A"
-              // icon={marker}
-              icon={markerSymbol}
+              icon={Utilities.pinSymbol('#b09e99')}
+              // icon={markerSymbol}
               // onClick={() => onSelect(route.routes[0].legs[0])}
             ></Marker>
             <Marker
               position={routeData.etuor.routes[0].legs[0].start_location}
               title="Origin B"
-              // icon={marker}
-              icon={markerSymbol}
+              icon={Utilities.pinSymbol('#64b6ac')}
+              // icon={markerSymbol}
               className="origin-B"
               options={{ style: markerStyle }}
               // onClick={() => onSelect(route.routes[0].legs[0])}

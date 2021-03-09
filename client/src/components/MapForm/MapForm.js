@@ -131,23 +131,48 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
                 Cycle
                 <input type="radio" value="bicycling" name="mode" className="bicycling" checked={travelMode === 'bicycling'} />
                 Walk
-                <input type="radio" value="walking" name="mode" className="on-foot" checked={travelMode === 'walking'} />
+                <input type="radio" value="walking" name="mode" className="walking" checked={travelMode === 'walking'} />
               </div>
               <button className="calculate-button">Find halfway...</button>
+              <p className="poi-text">Add a place of interest around halfway location (optional): </p>
               <div className="place-type-select">
                 <select value={placeType} onChange={handleChangeType} className="place-dropdown">
-                  <option value="none">None</option>
-                  <option value="art_gallery">Art Galleries</option>
-                  <option value="bar">Bars</option>
-                  <option value="cafe">Cafes</option>
-                  <option value="campground">Campgrounds</option>
-                  <option value="movie-theatre">Cinemas</option>
-                  <option value="museum">Museums</option>
-                  <option value="night_club">Clubs</option>
-                  <option value="park">Parks</option>
-                  <option value="restaurant">Restaurants</option>
-                  <option value="shopping_mall">Shopping Mall</option>
-                  <option value="tourist_attraction">Tourist Attractions</option>
+                  <option className="option" value="none">
+                    None
+                  </option>
+                  <option className="option" value="art_gallery">
+                    Art Galleries
+                  </option>
+                  <option className="option" value="bar">
+                    Bars
+                  </option>
+                  <option className="option" value="cafe">
+                    Cafes
+                  </option>
+                  <option className="option" value="campground">
+                    Campgrounds
+                  </option>
+                  <option className="option" value="movie-theatre">
+                    Cinemas
+                  </option>
+                  <option className="option" value="museum">
+                    Museums
+                  </option>
+                  <option className="option" value="night_club">
+                    Clubs
+                  </option>
+                  <option className="option" value="park">
+                    Parks
+                  </option>
+                  <option className="option" value="restaurant">
+                    Restaurants
+                  </option>
+                  <option className="option" value="shopping_mall">
+                    Shopping Mall
+                  </option>
+                  <option className="option" value="tourist_attraction">
+                    Tourist Attractions
+                  </option>
                 </select>
               </div>
             </div>
