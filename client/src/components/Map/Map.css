@@ -1,11 +1,20 @@
 .infowindow {
   background: #fee9e1;
   border: 1px solid #ccc;
-  padding: 0.5vw;
+  padding: 0vw;
   height: 3vw;
   width: 8vw;
   font-family: 'Johnston';
   font-size: 1vw;
+  text-align: center;
+  margin: 0px;
+  font-weight: bold;
+}
+
+.infowindow-midpoint {
+  min-width: 8vw;
+  display: flex;
+  flex-direction: column;
   text-align: center;
 }
 .gm-style .gm-style-iw-c {
@@ -26,12 +35,30 @@
   overflow: auto;
 }
 
+button.gm-ui-hover-effect {
+  display: none;
+}
+
 p {
   padding: 1px;
   margin: 5px;
+}
+.gm-style-iw + button {
+  display: none;
+}
+.gm-style-iw + div {
+  display: none;
 }
 
 .places-infowindow {
   font-family: 'Johnston';
   text-align: center;
+}
+
+.direct-link {
+  color: #64b6ac;
+  text-decoration: none; /* no underline */
+}
+.direct-link:hover {
+  color: #b09e99;
 }

@@ -121,7 +121,7 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
             <div className="origin">
               <p>Origin A</p>
               <Autocomplete onLoad={onLoadA} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeA}>
-                <input type="text" required={true} placeholder="enter address here..." className="input" onDoubleClick={(e) => e.target.reset} />
+                <input spellcheck="false" type="text" required={true} placeholder="enter address here..." className="input" onDoubleClick={(e) => e.target.reset} />
               </Autocomplete>
             </div>
             <div className="map-form-middle">
@@ -133,69 +133,59 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
                 Walk
                 <input type="radio" value="walking" name="mode" className="walking" checked={travelMode === 'walking'} />
               </div>
-              <button className="calculate-button">Find halfway...</button>
-              <p className="poi-text">Add a place of interest around halfway location (optional): </p>
-              <div className="place-type-select">
-                <select value={placeType} onChange={handleChangeType} className="place-dropdown">
-                  <option className="option" value="none">
-                    None
-                  </option>
-                  <option className="option" value="art_gallery">
-                    Art Galleries
-                  </option>
-                  <option className="option" value="bar">
-                    Bars
-                  </option>
-                  <option className="option" value="cafe">
-                    Cafes
-                  </option>
-                  <option className="option" value="campground">
-                    Campgrounds
-                  </option>
-                  <option className="option" value="movie-theatre">
-                    Cinemas
-                  </option>
-                  <option className="option" value="museum">
-                    Museums
-                  </option>
-                  <option className="option" value="night_club">
-                    Clubs
-                  </option>
-                  <option className="option" value="park">
-                    Parks
-                  </option>
-                  <option className="option" value="restaurant">
-                    Restaurants
-                  </option>
-                  <option className="option" value="shopping_mall">
-                    Shopping Mall
-                  </option>
-                  <option className="option" value="tourist_attraction">
-                    Tourist Attractions
-                  </option>
-                </select>
+              <div className="middle-middle">
+                <p className="poi-text">Find places of interest: </p>
+                <div className="place-type-select">
+                  <select value={placeType} onChange={handleChangeType} className="place-dropdown">
+                    <option className="option" value="none">
+                      None
+                    </option>
+                    <option className="option" value="art_gallery">
+                      Art Galleries
+                    </option>
+                    <option className="option" value="bar">
+                      Bars
+                    </option>
+                    <option className="option" value="cafe">
+                      Cafes
+                    </option>
+                    <option className="option" value="campground">
+                      Campgrounds
+                    </option>
+                    <option className="option" value="movie-theatre">
+                      Cinemas
+                    </option>
+                    <option className="option" value="museum">
+                      Museums
+                    </option>
+                    <option className="option" value="night_club">
+                      Clubs
+                    </option>
+                    <option className="option" value="park">
+                      Parks
+                    </option>
+                    <option className="option" value="restaurant">
+                      Restaurants
+                    </option>
+                    <option className="option" value="shopping_mall">
+                      Shopping Mall
+                    </option>
+                    <option className="option" value="tourist_attraction">
+                      Tourist Attractions
+                    </option>
+                  </select>
+                </div>
               </div>
+              <button className="calculate-button">Meet in the middle</button>
             </div>
-            <div className="title">
-              <div className="origin">
-                <p>Origin B</p>
-                <Autocomplete onLoad={onLoadB} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeB}>
-                  <input
-                    type="text"
-                    required={true}
-                    // onFocus -- lok up in docs
-
-                    // value={textOrigins.originB}
-                    // name="originB"
-                    // onChange={handleManualChange}
-                    placeholder="enter address here..."
-                    className="input"
-                  />
-                </Autocomplete>
-              </div>
-              <div></div>
-              {/* <p>Origin B</p> */}
+            <div className="origin">
+              <p>Origin B</p>
+              <Autocomplete onLoad={onLoadB} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeB}>
+                <input spellcheck="false" type="text" required={true} placeholder="enter address here..." className="input" />
+              </Autocomplete>
             </div>
+            <div></div>
+            {/* <p>Origin B</p> */}
           </form>
         </div>
       </div>

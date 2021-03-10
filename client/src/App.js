@@ -74,15 +74,15 @@ function App() {
           🙏💚
         </div>
         <div className="footer-rest">
-          <a className="tcp" href="http://terms">
+          <a className="tcp" href="http://equid.com/terms">
             {' '}
             Terms
           </a>
-          <a className="tcp" href="http://contact">
+          <a className="tcp" href="http://equid.com/contact">
             {' '}
             Contact
           </a>
-          <a className="tcp" href="http://privacy">
+          <a className="tcp" href="http://equid.com/privacy">
             {' '}
             Privacy
           </a>
