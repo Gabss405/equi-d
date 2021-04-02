@@ -22,13 +22,18 @@ The app determines the ideal meeting point between two locations anywhere around
 - User selectable travel modes include driving 🚗, cycling 🚴 and walking🚶🏾‍♂️//PIC 
 - Optional feature of Places Of Interest around halfway location //PIC
 ## Screenshots:
-<p align="center">
-  <img src="readmeFiles/romeParisDemo.gif"/>
+<p float="left">
+  <img src="readmeFiles/cyclingNYC.png" width="200"/>
+  <img src="readmeFiles/walking_victoriapark.png"  width="200"/>
+</p>
+<p float="left">
+  <img src="readmeFiles/driving_noPOI.png"  width="200"/>
+  <img src="readmeFiles/brooklyn_POI.png"  width="200"/>
 </p>
 
 ## Getting started
--  Make sure you have a valid Google Maps API key more info on that here: https://developers.google.com/maps/documentation/javascript/get-api-key
-- enable the following APIs in credentials: -   Geocoding API, Distance Matrix API, Directions API, Maps JavaScript API, Places API
+- Make sure you have a valid Google Maps API key more info on that here: https://developers.google.com/maps/documentation/javascript/get-api-key
+- Enable the following APIs in credentials: -   Geocoding API, Distance Matrix API, Directions API, Maps JavaScript API, Places API
 - Fork & clone this repo  
 - Run  `npm i`  in server and client directory
 - Adjust the necessary env variables to match your system. There's a .env.copy file both in server and client folders to help you with this process.  
