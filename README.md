@@ -1,11 +1,4 @@
-
-
-<p align="center">
-  <img src="readmeFiles/logo.png" />
-</p>
 <h1>Equi-d </h1>
-
-
 >### Meet you in the middle...
 <p align="center">
   <img src="readmeFiles/landing.gif"/>
