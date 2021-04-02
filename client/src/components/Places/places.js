@@ -2,19 +2,9 @@ import { Marker, InfoWindow } from '@react-google-maps/api';
 import Utilities from '../../utilities/Utilities';
 
 export default function Places({ nearbyPlaces }) {
-  console.log(nearbyPlaces);
-
   const places = nearbyPlaces.results.map((item) => {
     return (
-      <Marker
-        key={item.place_id}
-        position={item.geometry.location}
-        title={item.name}
-        rating={item.rating}
-        // icon={marker}
-        icon={Utilities.pinSymbol('blue')}
-        // onClick={() => onSelect(route.routes[0].legs[0])}
-      >
+      <Marker key={item.place_id} position={item.geometry.location} title={item.name} rating={item.rating} icon={Utilities.pinSymbol('blue')}>
         {item.rating > 4.3 && (
           <InfoWindow onLoad={() => {}} position={item.geometry.location}>
             <div className="places-infowindow">

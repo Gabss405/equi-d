@@ -1,20 +1,13 @@
-import './MapForm.css';
 import { useEffect, useState } from 'react';
-import ApiServices from '../../services/ApiServices';
 import { Autocomplete, LoadScript } from '@react-google-maps/api';
-// import PlacesAutocomplete from '../__Places/PlacesAutocomplete';
 
+import './MapForm.css';
 import logo from '../../assets/logo3.png';
 
+import ApiServices from '../../services/ApiServices';
 const ApiKey = process.env.REACT_APP_API_KEY;
 
-// const libraries = ["places"];
-
 function MapForm({ setRouteData, setShowAnswer, setCity }) {
-  // const [textOrigins, setNewTextOrigins] = useState({
-  //   originA: "",
-  //   originB: "",
-  // });
   const [autocompleteOrigins, setNewAutocompleteOrigins] = useState({
     placeA: '',
     placeB: '',
@@ -26,15 +19,10 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
   const [checked, setChecked] = useState({ driving: false, bicycling: false, walking: false });
   const [placeType, setPlaceType] = useState(null);
 
-  // const [libraries] = useState(["places"]);
-  // const [place, setNewPlace] = useState("");
-
   const onLoadA = (autocomplete) => {
-    // console.log(autocomplete);
     setAutocompleteA(autocomplete);
   };
   const onLoadB = (autocomplete) => {
-    // console.log(autocomplete);
     setAutocompleteB(autocomplete);
   };
 
@@ -65,9 +53,6 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // console.log('placetype:',placeType);
-
     ApiServices.fetchMidpointByPlaceIDService({
       placeA_id: autocompleteOrigins.placeA.place_id,
       placeB_id: autocompleteOrigins.placeB.place_id,
@@ -83,30 +68,7 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
     setShowAnswer(false);
     setCity('');
     setChecked({ driving: false, bicycling: false, walking: false });
-
-    // setNewAutocompleteOrigins({
-    //   placeA: '',
-    //   placeB: '',
-    // });
   };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log(textOrigins);
-  //   ApiServices.fetchMidpointByNameService({
-  //     originA: textOrigins.originA,
-  //     originB: textOrigins.originB,
-  //   })
-  //     .then((res) => (res.status < 400 ? res : Promise.reject()))
-  //     .then((res) => (res.status !== 204 ? res.json() : res))
-  //     .then((res) => setRouteData(res))
-  //     .catch((err) => {
-  //       console.error("Fetch Error: ", err);
-  //     });
-
-  //   setNewTextOrigins({ originA: "", originB: "" });
-
-  // };
 
   return (
     <LoadScript googleMapsApiKey={ApiKey} libraries={libraries}>
@@ -184,19 +146,11 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
                 <input spellcheck="false" type="text" required={true} placeholder="enter address here..." className="input" />
               </Autocomplete>
             </div>
-            <div></div>
-            {/* <p>Origin B</p> */}
           </form>
         </div>
       </div>
     </LoadScript>
   );
-
-  // function postEvent(title, date, venue) {
-  //   ApiServices.postEventService({ title, date, venue }).then((newEvent) => {
-  //     setEvents([...events, newEvent]);
-  //   });
-  // }
 }
 
 export default MapForm;

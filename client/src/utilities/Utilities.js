@@ -24,7 +24,6 @@ function pinSymbol(color) {
 function optimiseZoom(routeObj) {
   let routeDistance = routeObj.routes[0].legs[0].distance.value;
   let zoomlevel = 5;
-  // console.log(routeDistance);
   if (routeDistance <= 200000) zoomlevel = 11;
   if (routeDistance <= 335364) zoomlevel = 10;
   if (routeDistance <= 1108239) zoomlevel = 8;
@@ -33,25 +32,11 @@ function optimiseZoom(routeObj) {
   if (routeDistance > 3000000) zoomlevel = 5;
   return zoomlevel;
 }
-// optimiseZoom()
 
 const Utilities = {
   secondsToTime,
   pinSymbol,
   optimiseZoom,
 };
-
-// function randomCoord() {
-//   let rndmLat =
-//     Math.ceil(Math.random() * 60) * (Math.round(Math.random()) ? 1 : -1);
-//   let rndmLng =
-//     Math.ceil(Math.random() * 150) * (Math.round(Math.random()) ? 1 : -1);
-
-//   if (rndmLng < -70) rndmLat += 30;
-//   if (-40 < rndmLng < -20) rndmLng += 10;
-//   if (40 < rndmLng < 150) rndmLat += 30;
-
-//   return { lat: rndmLat, lng: rndmLng };
-// }
 
 export default Utilities;

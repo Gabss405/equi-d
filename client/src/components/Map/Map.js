@@ -1,19 +1,13 @@
+import { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker, Polyline, InfoWindow } from '@react-google-maps/api';
 
-import { useState, useEffect } from 'react';
-
 import './Map.css';
-
-import Utilities from '../../utilities/Utilities';
-
-import markerSymbol from './map.styles/marker.png';
-
 import { retro, retroLabels, mapStyles, marker } from './map.styles/map.style';
 
+import Utilities from '../../utilities/Utilities';
 const ApiKey = process.env.REACT_APP_API_KEY;
 
 function Map({ routeData, randomCity, landingZoom }) {
-  //const [selected, setSelected] = useState("");
   const [currentPosition, setCurrentPosition] = useState({});
   const [showPolylineA, setShowPolylineA] = useState(false);
   const [showPolylineB, setShowPolylineB] = useState(false);
@@ -28,24 +22,6 @@ function Map({ routeData, randomCity, landingZoom }) {
     };
     setCurrentPosition(currentPosition);
   };
-
-  //
-
-  console.log(routeData.nearbyPlaces);
-
-  let zoomLevel = 5;
-
-  // route: routes.route,
-  //     etuor: routes.etuor,
-  //     routePolyTimeUnit,
-  //     etuorPolyTimeUnit,
-  //     trueHalfway,
-  //     a2TrueHalfwayDirections,
-  //     b2TrueHalfwayDirections,
-  //     a2TrueHalfwayDecodedPolyline,
-  //     b2TrueHalfwayDecodedPolyline,
-  //     a2TrueHalfwayDecodedPolylineMidPoint,
-  //     b2TrueHalfwayDecodedPolylineMidPoint,
 
   let routePolylineOptions = {
     strokeColor: '#64b6ac',
@@ -80,25 +56,6 @@ function Map({ routeData, randomCity, landingZoom }) {
   let nearbyPlaces = [];
 
   if (routeData.nearbyPlaces) {
-    console.log(routeData);
-    // routePolylineOptions.paths = routeData.a2TrueHalfwayDecodedPolyline;
-    // etuorPolylineOptions.paths = routeData.b2TrueHalfwayDecodedPolyline;
-
-    console.log('Optimal Halfway Duration(OHD) from A->A/B: ', Utilities.secondsToTime(routeData.route.routes[0].legs[0].duration.value / 2));
-    console.log('Optimal Halfway Duration(OHD)  from B->B/A: ', Utilities.secondsToTime(routeData.etuor.routes[0].legs[0].duration.value / 2));
-    console.log(`Margin of error (deviance allowed to OHD) (A->B): ${Utilities.secondsToTime(routeData.routePolyTimeUnit * 2)}`);
-    console.log(`Margin of error (deviance allowed to OHD)(B->A): ${Utilities.secondsToTime(routeData.etuorPolyTimeUnit * 2)}`);
-
-    console.log('It takes ', routeData.a2TrueHalfwayDirections.routes[0].legs[0].duration.text, ' to get from Origin A to true halfway');
-
-    console.log('It takes ', routeData.b2TrueHalfwayDirections.routes[0].legs[0].duration.text, ' to get from Origin B to true halfway ');
-
-    //TODO : optimize zoom
-
-    // zoomLevel = Utilities.optimiseZoom(routeData.route);
-
-    // console.log(routeData.nearbyPlaces);
-
     if (Object.keys(routeData.nearbyPlaces).length > 0) {
       nearbyPlaces = routeData.nearbyPlaces.results.map((item) => {
         return (
@@ -107,16 +64,6 @@ function Map({ routeData, randomCity, landingZoom }) {
             position={item.geometry.location}
             title={item.name}
             rating={item.rating}
-            // icon={item.icon}
-            // options={{ style: {width:"5px", height'5px'} }}
-            // icon={{
-            //   path:
-            //     'M12.75 0l-2.25 2.25 2.25 2.25-5.25 6h-5.25l4.125 4.125-6.375 8.452v0.923h0.923l8.452-6.375 4.125 4.125v-5.25l6-5.25 2.25 2.25 2.25-2.25-11.25-11.25zM10.5 12.75l-1.5-1.5 5.25-5.25 1.5 1.5-5.25 5.25z',
-            //   fillColor: '#0000ff',
-            //   fillOpacity: 1.0,
-            //   strokeWeight: 0,
-            //   scale: 1.25,
-            // }}
             icon={Utilities.pinSymbol('#fee9e1')}
             onClick={() => {
               setSelectedCenter(item);
@@ -150,21 +97,6 @@ function Map({ routeData, randomCity, landingZoom }) {
   };
 
   useEffect(() => {}, [showPolylineA, showPolylineB, showMidpointInfoWindow]);
-  console.log(routeData);
-
-  // useEffect(() => {
-  //   const listener = (e) => {
-  //     if (e.key === 'Escape') {
-  //       setSelectedCenter(null);
-  //     }
-  //   };
-  //   window.addEventListener('keydown', listener);
-  //   return () => {
-  //     window.removeEventListener('keydown', listener);
-  //   };
-  // }, []);
-
-  //const london = { lat: 51.50853, lng: -0.076132 };
   const zoomRndm = Math.floor(Math.random() * 11) + 7;
 
   const markerStyle = {
@@ -229,22 +161,14 @@ function Map({ routeData, randomCity, landingZoom }) {
               )}
             </Marker>
 
-            <Marker
-              position={routeData.route.routes[0].legs[0].start_location}
-              title="Origin A"
-              icon={Utilities.pinSymbol('#b09e99')}
-              // icon={markerSymbol}
-              // onClick={() => onSelect(route.routes[0].legs[0])}
-            ></Marker>
+            <Marker position={routeData.route.routes[0].legs[0].start_location} title="Origin A" icon={Utilities.pinSymbol('#b09e99')}></Marker>
             <Marker
               position={routeData.etuor.routes[0].legs[0].start_location}
               title="Origin B"
               icon={Utilities.pinSymbol('#64b6ac')}
               // icon={markerSymbol}
               className="origin-B"
-              options={{ style: markerStyle }}
-              // onClick={() => onSelect(route.routes[0].legs[0])}
-            ></Marker>
+              options={{ style: markerStyle }}></Marker>
 
             {routeData?.nearbyPlaces?.results && <>{nearbyPlaces}</>}
           </GoogleMap>
@@ -260,9 +184,7 @@ function Map({ routeData, randomCity, landingZoom }) {
             }}
             mapContainerStyle={mapStyles}
             zoom={landingZoom ? landingZoom : zoomRndm}
-            center={randomCity.location}
-            // center={currentPosition}
-          ></GoogleMap>
+            center={randomCity.location}></GoogleMap>
         )}
       </>
     </LoadScript>
