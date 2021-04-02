@@ -1,6 +1,5 @@
 'use strict';
 const fetch = require('node-fetch');
-// const { anyApiKey } = require("./config");
 const anyApiKey = process.env.API_KEY;
 
 const DIRECTIONS_API_URL = 'https://maps.googleapis.com/maps/api/directions/json?';
@@ -41,10 +40,7 @@ async function fetchBothDirections(origins) {
 async function fetchDirectionsById(origins) {
   const params = { origins };
   const resRoutes = {};
-  //fetching A->B route obj:
-  // console.log(DIRECTIONS_API_URL + `origin=place_id:${params.origins.A}&destination=place_id:${params.origins.B}&mode=${params.origins.mode}&key=${anyApiKey}`);
   resRoutes.route = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=place_id:${params.origins.A}&destination=place_id:${params.origins.B}&mode=${params.origins.mode}&key=${anyApiKey}`);
-  //fetching B->A route obj:
   resRoutes.etuor = await fetchRequestHelper(DIRECTIONS_API_URL + `origin=place_id:${params.origins.B}&destination=place_id:${params.origins.A}&mode=${params.origins.mode}&key=${anyApiKey}`);
 
   return resRoutes;
@@ -53,7 +49,6 @@ async function fetchDirectionsById(origins) {
 async function fetchDistanceMatrix(start, end, mode) {
   let origin = `${start.lat},${start.lng}`;
   let destination = `${end.lat},${end.lng}`;
-  // console.log(DISTANCE_MATRIX_API + `origins=${origin}&destinations=${destination}&mode=${mode}&key=${anyApiKey}`);
   return fetchRequestHelper(
     DISTANCE_MATRIX_API + `origins=${origin}&destinations=${destination}&mode=${mode}&key=${anyApiKey}` // use | pipe to pass more than one origin or destination
   );
@@ -64,26 +59,4 @@ async function fetchNearbyPlaces(location, radius, type) {
   return fetchRequestHelper(PLACES_API + `location=${formattedLocation}&radius=500&type=${type}&key=${anyApiKey}`);
 }
 
-// https://maps.googleapis.com/maps/api/directions/json?
-// origin=Toronto&destination=Montreal
-// &avoid=highways &mode=bicycling
-// &key=
-
-// https://maps.googleapis.com/maps/api/directions/json?
-// origin=Toronto&destination=Montreal
-// &avoid=highways&mode=bicycling
-// &key=YOUR_API_KEY
-
-//https://maps.googleapis.com/maps/api/directions/json?origin=Toronto&destination=Montreal&key=YOUR_API_KEY
-
-// http://maps.googleapis.com/maps/api/directions/json?origin=41.8781139,-87.6297872&destination=40.6655101,-73.891889&key=YOUR_API_KEY
-
-//https://maps.googleapis.com/maps/api/distancematrix/json?origins=41.8781139,-87.6297872&destinations=113%2035.14811,-90.40892&key=YOUR_API_KEY
-
-//https://maps.googleapis.com/maps/api/distancematrix/json?origins=40.6655101,-73.89188969999998&destinations=35.14811,-90.40892&key=YOUR_API_KEY
 module.exports = { fetchDirection, fetchBothDirections, fetchDirectionsById, fetchDistanceMatrix, fetchRequestHelper, fetchNearbyPlaces };
-
-// https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=51.51092,-0.11344&radius=1500&type=bar&key=
-// https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.70862,-73.93267&radius=500&type=bar&key=
-
-// https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&key=YOUR_API_KEY
