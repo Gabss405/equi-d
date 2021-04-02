@@ -168,6 +168,13 @@ input[type='radio']:checked:after {
   padding-left: 2vw;
 }
 
+.logo-and-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  min-width: 15vw;
+}
 .logo {
   width: 5vw;
   height: 5vw;

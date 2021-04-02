@@ -73,11 +73,12 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
   return (
     <LoadScript googleMapsApiKey={ApiKey} libraries={libraries}>
       <div className="top-navbar">
-        <div className="logo-container">
-          {' '}
-          <img className="logo" src={logo} />
+        <div className="logo-and-title-container">
+          <div className="logo-container">
+            <img className="logo" src={logo} />
+          </div>
+          <div className="equi-d"> Equi-d </div>
         </div>
-        <div className="equi-d"> Equi-d </div>
         <div className="inputs-container">
           <form className="form" onSubmit={handleSubmit}>
             <div className="origin">

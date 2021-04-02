@@ -58,7 +58,6 @@ async function polylineDecoderMulti(routes, mode) {
 }
 
 async function polylineDecoder(route, mode) {
-  //console.log(route.routes[0]);
   let routePolylineCoordinates = [];
   if (mode === 'driving') {
     polyline.decode(route.routes[0].overview_polyline.points).forEach((item) => {
@@ -69,7 +68,6 @@ async function polylineDecoder(route, mode) {
       routePolylineCoordinates.push({ lat: item[0], lng: item[1] });
     });
   }
-  //console.log(routePolylineCoordinates);
   return routePolylineCoordinates;
 }
 
