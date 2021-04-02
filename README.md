@@ -6,8 +6,12 @@
   <img src="readmeFiles/landing.gif"/>
 </p>
 
+
+
 **Equi-d** is a web based 🌎mapplication🌎 helping users to easily find a middle ground. 
 The app determines the ideal meeting point between two locations anywhere around the globe. 
+
+
 
 <p align="center">
   <img src="readmeFiles/romeParisDemo.gif"/>
