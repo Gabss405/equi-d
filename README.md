@@ -7,24 +7,17 @@
 </p>
 
 **Equi-d** is a web based 🌎mapplication🌎 helping users to easily find a middle ground. 
-
-<p align="center">
-  <img src="readmeFiles/screenshot-readme-2.png" />
-</p>
-
 The app determines the ideal meeting point between two locations anywhere around the globe. 
 
-![Alt Text](https:gif) gif 
+<p align="center">
+  <img src="readmeFiles/romeParisDemo.gif"/>
+</p>
 
-Main features:
+## Main features:
 - Using Google route information the app finds the equidistant point on the route based on travel duration. 🕒 //PIC 
 - User selectable travel modes include driving 🚗, cycling 🚴 and walking🚶🏾‍♂️//PIC 
 - Optional feature of Places Of Interest around halfway location //PIC
 
-![Alt Text](https:gif) gif 
-
-##
-- 
 
 ## Getting started
 -  Make sure you have a valid Google Maps API key more info on that here: https://developers.google.com/maps/documentation/javascript/get-api-key
