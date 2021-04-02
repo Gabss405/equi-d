@@ -1,7 +1,7 @@
-<h1>Equi-d </h1>
+<h1 align="center">Equi-d </h1>
 
 
->Meet you in the middle...
+<p align="center"> Meet you in the middle...</p>
 <p align="center">
   <img src="readmeFiles/landing.gif"/>
 </p>
@@ -17,7 +17,10 @@ The app determines the ideal meeting point between two locations anywhere around
 - Using Google route information the app finds the equidistant point on the route based on travel duration. 🕒 //PIC 
 - User selectable travel modes include driving 🚗, cycling 🚴 and walking🚶🏾‍♂️//PIC 
 - Optional feature of Places Of Interest around halfway location //PIC
-
+## Screenshots:
+<p align="center">
+  <img src="readmeFiles/romeParisDemo.gif"/>
+</p>
 
 ## Getting started
 -  Make sure you have a valid Google Maps API key more info on that here: https://developers.google.com/maps/documentation/javascript/get-api-key
