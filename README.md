@@ -7,10 +7,10 @@
 </p>
 
 
-
+<hr>
 **Equi-d** is a web based 🌎mapplication🌎 helping users to easily find a middle ground. 
 The app determines the ideal meeting point between two locations anywhere around the globe. 
-
+<hr>
 
 
 <p align="center">
