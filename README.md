@@ -24,11 +24,11 @@ The app determines the ideal meeting point between two locations anywhere around
 ## Screenshots:
 <p float="left">
   <img src="readmeFiles/cyclingNYC.png" width="50%"/>
-  <img src="readmeFiles/walking_victoriapark.png"  width="50%"/>
+  <img src="readmeFiles/walking_victoriapark.png"  width="45%"/>
 </p>
 <p float="left">
-  <img src="readmeFiles/driving_noPOI.png"  width="50%"/>
-  <img src="readmeFiles/brooklyn_POI.png"  width="50%"/>
+  <img src="readmeFiles/driving_noPOI.png"  width="40%"/>
+  <img src="readmeFiles/brooklyn_POI.png"  width="40%"/>
 </p>
 
 ## Getting started
