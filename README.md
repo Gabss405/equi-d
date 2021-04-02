@@ -1,14 +1,14 @@
 
 
 <p align="center">
-  <img src="readmeFiles/screenshot-readme-2.png" />
+  <img src="readmeFiles/logo.png" />
 </p>
-#  Equi-d 
+<h1>Equi-d </h1>
 
 
 >### Meet you in the middle...
 <p align="center">
-  <img src="readmeFiles/screenshot-readme-2.png" />
+  <img src="readmeFiles/landing.gif"/>
 </p>
 
 **Equi-d** is a web based 🌎mapplication🌎 helping users to easily find a middle ground. 
@@ -47,7 +47,7 @@ Main features:
 * [Node.js](https://nodejs.org/en/) - _"Node_.js® is a JavaScript runtime built on Chrome's V8 JavaScript engine."
 * [Express JS](https://expressjs.com/) - "Fast, unopinionated, minimalist web framework for Node.js"
 * [Google Maps API](https://developers.google.com/maps) - "Build awesome apps with Google's knowledge of the real world."
-* [React-google-maps](https://www.npmjs.com/package/@react-google-maps/api - Provides bindings to the Google Maps API and lets you use it in your app as React components.
+* [@react-google-maps](https://www.npmjs.com/package/@react-google-maps/api) - Provides bindings to the Google Maps API and lets you use it in your app as React components.
 * [Excalidraw](https://excalidraw.com/) - "A virtual collaborative whiteboard tool that lets you easily sketch diagrams that have a hand-drawn feel to them."
 
 ## Author
