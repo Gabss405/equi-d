@@ -1,4 +1,4 @@
-<h1 align="center">Equi-d </h1>
+<h1 align="center">Equi-D </h1>
 
 
 <p align="center"> Meet you in the middle...</p>
@@ -8,7 +8,7 @@
 
 
 <hr>
-**Equi-d** is a web based 🌎mapplication🌎 helping users to easily find a middle ground. 
+<strong> Equi-D </strong>is a web based 🌎mapplication🌎 helping users to easily find a middle ground. 
 The app determines the ideal meeting point between two locations anywhere around the globe. 
 <hr>
 
