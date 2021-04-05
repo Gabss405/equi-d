@@ -24,8 +24,8 @@ The app determines the ideal meeting point between two locations anywhere around
 ## Screenshots:
 
 <p align="center">
-  <img src="readmeFiles/1.png" width="50%"/>
-  <img src="readmeFiles/2.png" width="50%"/>
+  <img src="readmeFiles/1.png" width="50%" float="left"/>
+  <img src="readmeFiles/2.png" width="50%" float="right"/>
 </p>
 
 <p align="center">
