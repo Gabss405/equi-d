@@ -23,9 +23,11 @@ The app determines the ideal meeting point between two locations anywhere around
 - Optional feature of Places Of Interest around halfway location 
 ## Screenshots:
 
-<p align="center">
-  <img src="readmeFiles/1.png" width="50%" float="left"/>
-  <img src="readmeFiles/2.png" width="50%" float="right"/>
+<p float="left">
+  <img src="readmeFiles/1.png" width="50%" />
+</p>
+<p float="right">
+  <img src="readmeFiles/2.png" width="50%" />
 </p>
 
 <p align="center">
