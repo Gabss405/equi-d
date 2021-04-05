@@ -25,18 +25,12 @@ The app determines the ideal meeting point between two locations anywhere around
 
 <p align="center">
   <img src="readmeFiles/1.png" width="50%"/>
+  <img src="readmeFiles/2.png" width="50%"/>
 </p>
 
 <p align="center">
-  <img src="readmeFiles/2.png"  width="50%"/>
-</p>
-
-<p align="center">
-  <img src="readmeFiles/3.png"  width="50%"/>
-</p>
-
-<p align="center">
-  <img src="readmeFiles/4.png"  width="50%"/>
+  <img src="readmeFiles/3.png" width="50%"/>
+  <img src="readmeFiles/4.png" width="50%"/>
 </p>
 
 ## Getting started
