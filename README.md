@@ -19,8 +19,8 @@ The app determines the ideal meeting point between two locations anywhere around
 
 ## Main features:
 - Using Google route information the app finds the equidistant point on the route based on travel duration. 🕒 //PIC 
-- User selectable travel modes include driving 🚗, cycling 🚴 and walking🚶🏾‍♂️//PIC 
-- Optional feature of Places Of Interest around halfway location //PIC
+- User selectable travel modes include driving 🚗, cycling 🚴 and walking🚶
+- Optional feature of Places Of Interest around halfway location 
 ## Screenshots:
 
 <p align="center">
