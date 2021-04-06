@@ -23,21 +23,25 @@ The app determines the ideal meeting point between two locations anywhere around
 - Optional feature of Places Of Interest around halfway location 
 ## Screenshots:
 
-<p align="center">
-  <img src="readmeFiles/cyclingNYC.png" width="50%"/>
+<p align ="center">
+  <img src="readmeFiles/1.png" width="80%" />
 </p>
 
-<p align="center">
-  <img src="readmeFiles/walking_victoriapark.png"  width="45%"/>
+
+<p align ="center">
+  <img src="readmeFiles/2.png" width="80%" />
 </p>
 
-<p align="center">
-  <img src="readmeFiles/driving_noPOI.png"  width="40%"/>
+
+<p align ="center">
+  <img src="readmeFiles/3.png" width="80%" />
 </p>
 
-<p align="center">
-  <img src="readmeFiles/brooklyn_POI.png"  width="40%"/>
+
+<p align ="center">
+  <img src="readmeFiles/4.png" width="80%" />
 </p>
+
 
 ## Getting started
 - Make sure you have a valid Google Maps API key more info on that here: https://developers.google.com/maps/documentation/javascript/get-api-key
