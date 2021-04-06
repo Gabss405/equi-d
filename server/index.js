@@ -6,7 +6,7 @@ const router = require('./router');
 const app = express();
 const cors = require('cors');
 
-const PORT = process.env.PORT || 3015;
+const PORT = process.env.PORT;
 
 app.use(
   cors({
