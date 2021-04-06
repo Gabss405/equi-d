@@ -8,7 +8,11 @@ const cors = require('cors');
 
 const PORT = process.env.PORT || 3015;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 app.use(express.json());
 app.use(router);
 
