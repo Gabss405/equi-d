@@ -84,7 +84,7 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
             <div className="origin">
               <p>Origin A</p>
               <Autocomplete onLoad={onLoadA} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeA}>
-                <input spellcheck="false" type="text" required={true} placeholder="enter address here..." className="input" onDoubleClick={(e) => e.target.reset} />
+                <input spellCheck="false" type="text" required={true} placeholder="enter address here..." className="input" onDoubleClick={(e) => e.target.reset} />
               </Autocomplete>
             </div>
             <div className="map-form-middle">
@@ -144,7 +144,7 @@ function MapForm({ setRouteData, setShowAnswer, setCity }) {
             <div className="origin">
               <p>Origin B</p>
               <Autocomplete onLoad={onLoadB} fields={['place_id']} onPlaceChanged={handlePlaceChanged} value={autocompleteOrigins.placeB}>
-                <input spellcheck="false" type="text" required={true} placeholder="enter address here..." className="input" />
+                <input spellCheck="false" type="text" required={true} placeholder="enter address here..." className="input" />
               </Autocomplete>
             </div>
           </form>

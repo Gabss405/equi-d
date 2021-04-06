@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker, Polyline, InfoWindow } from '@react-google-maps/api';
 
 import './Map.css';
-import { retro, retroLabels, mapStyles, marker } from './map.styles/map.style';
+import { retro, retroLabels, mapStyles } from './map.styles/map.style';
 
 import Utilities from '../../utilities/Utilities';
 const ApiKey = process.env.REACT_APP_API_KEY;
