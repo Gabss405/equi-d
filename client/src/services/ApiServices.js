@@ -1,5 +1,8 @@
+// const BASE_URL = 'http://localhost:3015/'
+const BASE_URL = 'https://equi-d.herokuapp.com/';
+
 function fetchMidpointByNameService({ originA, originB }) {
-  return fetch(`http://localhost:3015/getroutes/${originA}/${originB}/`);
+  return fetch(`${BASE_URL}getroutes/${originA}/${originB}/`);
 }
 
 function fetchMidpointByPlaceIDService({ placeA_id, placeB_id, mode, type }) {
@@ -7,11 +10,11 @@ function fetchMidpointByPlaceIDService({ placeA_id, placeB_id, mode, type }) {
     type = 'null';
   }
   console.log(type);
-  return fetch(`http://localhost:3015/getroutes/${placeA_id}/${placeB_id}/${mode}/${type}`);
+  return fetch(`${BASE_URL}getroutes/${placeA_id}/${placeB_id}/${mode}/${type}`);
 }
 
 function fetchRandomCity() {
-  return fetch(`http://localhost:3015/getrandomcity`);
+  return fetch(`${BASE_URL}getrandomcity`);
 }
 
 const ApiServices = {
