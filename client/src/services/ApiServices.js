@@ -1,5 +1,5 @@
 // const BASE_URL = 'http://localhost:5000/';
-const BASE_URL = 'https://equi-d.herokuapp.com/';
+const BASE_URL = 'https://equi-d-server.herokuapp.com/';
 
 function fetchMidpointByNameService({ originA, originB }) {
   return fetch(`${BASE_URL}getroutes/${originA}/${originB}/`);
